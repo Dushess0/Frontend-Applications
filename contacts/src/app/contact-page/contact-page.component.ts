@@ -5,21 +5,16 @@ import { ContactsProviderService } from '../services/contacts-provider.service';
 @Component({
   selector: 'app-contact-page',
   templateUrl: './contact-page.component.html',
-  styleUrls: ['./contact-page.component.scss']
+  styleUrls: ['./contact-page.component.scss'],
 })
 export class ContactPageComponent implements OnInit {
-
-  constructor(private contactService: ContactsProviderService) { }
+  constructor(private contactService: ContactsProviderService) {}
 
   contacts: ContactModel[] = [];
   displayedColumns: string[] = ['name', 'surname', 'phone'];
   ngOnInit(): void {
-    this.contactService.getContacts().subscribe(
-      data => {
-        console.log(data);
-        this.contacts = data;
-      }
-    )
+    this.contactService.getContacts().subscribe((data) => {
+      this.contacts = data;
+    });
   }
-
 }

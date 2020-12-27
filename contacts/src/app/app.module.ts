@@ -3,23 +3,28 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginPageComponent } from './login-page/login-page.component';
 import { ContactPageComponent } from './contact-page/contact-page.component';
-import {MatTableModule} from '@angular/material/table';
-
+import { MatTableModule } from '@angular/material/table';
+import { AuthGuardService } from './auth/auth-guard.service';
+import { AuthService } from './auth/auth.service';
+import { ForbiddenPageComponent } from './forbidden-page/forbidden-page.component';
+import { CallbackUrlPageComponent } from './callback-url/callback-url-page.component';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginPageComponent,
-    ContactPageComponent
+    ContactPageComponent,
+    ForbiddenPageComponent,
+    CallbackUrlPageComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatTableModule,
+    HttpClientModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [AuthGuardService, AuthService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
