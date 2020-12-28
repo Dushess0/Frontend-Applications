@@ -9,7 +9,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class CallbackUrlPageComponent implements OnDestroy {
   private routeSubscription: Subscription;
-  private accessTokenSubsription?: Subscription;
+  private accessTokenSubscription?: Subscription;
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
@@ -17,10 +17,10 @@ export class CallbackUrlPageComponent implements OnDestroy {
   ) {
     this.routeSubscription = this.route.queryParams.subscribe((params) => {
       const code = params.code;
-      if (this.accessTokenSubsription) {
-        this.accessTokenSubsription.unsubscribe();
+      if (this.accessTokenSubscription) {
+        this.accessTokenSubscription.unsubscribe();
       }
-      this.accessTokenSubsription = this.auth
+      this.accessTokenSubscription = this.auth
         .getAccessToken(code)
         .subscribe((_) => {
           this.router.navigate(['/']);
@@ -30,8 +30,8 @@ export class CallbackUrlPageComponent implements OnDestroy {
 
   public ngOnDestroy() {
     this.routeSubscription.unsubscribe();
-    if (this.accessTokenSubsription) {
-      this.accessTokenSubsription.unsubscribe();
+    if (this.accessTokenSubscription) {
+      this.accessTokenSubscription.unsubscribe();
     }
   }
 }

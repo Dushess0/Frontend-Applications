@@ -19,8 +19,8 @@ interface ServerTokenResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private _accessToken: Subject<string> = new Subject<string>();
-  public get accessToken(): Observable<string> {
+  private _accessToken: string="";
+  public get accessToken(): string {
     return this._accessToken;
   }
 
@@ -53,7 +53,7 @@ export class AuthService {
     const url = `${this.identityServerUrl}/token?code=${code}`;
     return this.http.get<ServerTokenResponse>(url).pipe(
       map((token) => token.token),
-      tap((token) => this._accessToken.next(token))
+      tap((token) => this._accessToken=token)
     );
   }
 }

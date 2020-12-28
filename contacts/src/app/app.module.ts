@@ -10,12 +10,16 @@ import { AuthService } from './auth/auth.service';
 import { ForbiddenPageComponent } from './forbidden-page/forbidden-page.component';
 import { CallbackUrlPageComponent } from './callback-url/callback-url-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './header/header.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+
 @NgModule({
   declarations: [
     AppComponent,
     ContactPageComponent,
     ForbiddenPageComponent,
     CallbackUrlPageComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     MatTableModule,
     HttpClientModule,
+    MatToolbarModule,
   ],
   providers: [AuthGuardService, AuthService],
   bootstrap: [AppComponent],
