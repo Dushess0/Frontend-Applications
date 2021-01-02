@@ -20,6 +20,7 @@ interface ServerTokenResponse {
 })
 export class AuthService {
   private _accessToken: string="";
+
   public get accessToken(): string {
     return this._accessToken;
   }

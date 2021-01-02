@@ -1,6 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 import { ContactModel } from '../models/contact.model';
 
 @Injectable({
@@ -8,29 +10,13 @@ import { ContactModel } from '../models/contact.model';
 })
 export class ContactsProviderService {
 
-  constructor() { }
-  private generateMockup(length: Number): ContactModel[] {
-    const names = ["Anna", "Zofia", "Paulina", "Maria", "Katarzyna", "Agnieszka", "Aleksandra", "Basia", "Magdalena"]
-    const surnames = ["Nowak", "Nowakowska", "Kowalczyk", "Wójcik", "Wożniak", "Szymańska", "Zielińska", "Lewandowska", "Kamińska"]
-    let result: ContactModel[] = [];
-
-    for (let index = 0; index < length; index++) {
-      result.push({
-        name: names[Math.floor(Math.random() * names.length)],
-        surname: surnames[Math.floor(Math.random() * surnames.length)],
-        phone: "+48" + Math.floor(10000000 + Math.random() * 90000000)
-      })
-
-    }
-    return result;
-
-
-
-  }
+  private readonly contactApiUrl = 'http://127.0.0.1:8000';
+  constructor(private auth: AuthService, private http: HttpClient) { }
 
   getContacts(): Observable<ContactModel[]> {
-
-    return of(this.generateMockup(10));
+    return this.http.get<ContactModel[]>(`${this.contactApiUrl}/contacts`, { headers: new HttpHeaders({
+      Authorization: `Berear ${this.auth.accessToken}`
+    })})
   }
 
 
