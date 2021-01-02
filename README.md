@@ -2,6 +2,17 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.4.
 
+## Running projects
+
+### To run development build:
+
+- ng serve -o --project=contacts  
+- ng serve -o --project=adminpanel
+- ng serve -o --project=calendar
+### To build library 
+
+ng build login-lib
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
