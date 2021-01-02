@@ -125,126 +125,6 @@
         }
       }
     },
-    "contacts": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/contacts",
-      "sourceRoot": "projects/contacts/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/contacts",
-            "index": "projects/contacts/src/index.html",
-            "main": "projects/contacts/src/main.ts",
-            "polyfills": "projects/contacts/src/polyfills.ts",
-            "tsConfig": "projects/contacts/tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "projects/contacts/src/favicon.ico",
-              "projects/contacts/src/assets"
-            ],
-            "styles": [
-              "projects/contacts/src/styles.scss"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/contacts/src/environments/environment.ts",
-                  "with": "projects/contacts/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "contacts:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "contacts:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "contacts:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/contacts/src/test.ts",
-            "polyfills": "projects/contacts/src/polyfills.ts",
-            "tsConfig": "projects/contacts/tsconfig.spec.json",
-            "karmaConfig": "projects/contacts/karma.conf.js",
-            "assets": [
-              "projects/contacts/src/favicon.ico",
-              "projects/contacts/src/assets"
-            ],
-            "styles": [
-              "projects/contacts/src/styles.scss"
-            ],
-            "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/contacts/tsconfig.app.json",
-              "projects/contacts/tsconfig.spec.json",
-              "projects/contacts/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/contacts/e2e/protractor.conf.js",
-            "devServerTarget": "contacts:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "contacts:serve:production"
-            }
-          }
-        }
-      }
-    },
     "calendar": {
       "projectType": "application",
       "schematics": {
@@ -401,6 +281,126 @@
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        }
+      }
+    },
+    "contacts": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/contacts",
+      "sourceRoot": "projects/contacts/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/contacts",
+            "index": "projects/contacts/src/index.html",
+            "main": "projects/contacts/src/main.ts",
+            "polyfills": "projects/contacts/src/polyfills.ts",
+            "tsConfig": "projects/contacts/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/contacts/src/favicon.ico",
+              "projects/contacts/src/assets"
+            ],
+            "styles": [
+              "projects/contacts/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/contacts/src/environments/environment.ts",
+                  "with": "projects/contacts/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "contacts:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "contacts:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "contacts:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/contacts/src/test.ts",
+            "polyfills": "projects/contacts/src/polyfills.ts",
+            "tsConfig": "projects/contacts/tsconfig.spec.json",
+            "karmaConfig": "projects/contacts/karma.conf.js",
+            "assets": [
+              "projects/contacts/src/favicon.ico",
+              "projects/contacts/src/assets"
+            ],
+            "styles": [
+              "projects/contacts/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/contacts/tsconfig.app.json",
+              "projects/contacts/tsconfig.spec.json",
+              "projects/contacts/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/contacts/e2e/protractor.conf.js",
+            "devServerTarget": "contacts:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "contacts:serve:production"
+            }
           }
         }
       }

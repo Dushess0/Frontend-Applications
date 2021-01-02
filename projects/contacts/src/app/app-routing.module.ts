@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardService } from './auth/auth-guard.service';
-import { CallbackUrlPageComponent } from './callback-url/callback-url-page.component';
+import { AuthGuardService, CallbackUrlPageComponent, ForbiddenPageComponent } from 'login-lib';
+
 import { ContactPageComponent } from './contact-page/contact-page.component';
-import { ForbiddenPageComponent } from './forbidden-page/forbidden-page.component';
+
 
 const routes: Routes = [
   {

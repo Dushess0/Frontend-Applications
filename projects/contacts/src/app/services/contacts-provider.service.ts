@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthService } from 'login-lib';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 import { ContactModel } from '../models/contact.model';
 
 @Injectable({
