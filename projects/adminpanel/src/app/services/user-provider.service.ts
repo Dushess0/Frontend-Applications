@@ -19,10 +19,10 @@ export class UserProviderService {
   public get currentProvider(): UserProvider {
     if (this.storage.offineMode && this.localUsers.canUse)
       return this.localUsers
-    else if (this.apiUsers.canUse) {
+    else
       return this.apiUsers;
-    }
-    return this.localUsers;
+    
+    
 
 
   }

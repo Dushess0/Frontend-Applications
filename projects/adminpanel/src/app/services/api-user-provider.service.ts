@@ -13,12 +13,12 @@ export class ApiUserProviderService implements UserProvider {
 
 
   serverUrl: string = "http://localhost:8000";
-  constructor(private httpService: HttpClient,) {
+  constructor(private httpService: HttpClient,private authService: AuthService) {
 
   }
   get canUse(): boolean
   {
-    return true;
+    return this.authService.connectionExists;
   }
 
   editUser(id: number, user: UserModel): void {

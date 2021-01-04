@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
+import { interval, Observable, of, Subscription } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 
 interface ServerUserModel {
@@ -20,39 +20,51 @@ interface ServerTokenResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private _accessToken: string="";
+  private _accessToken: string = "";
   public get accessToken(): string {
     return this._accessToken;
   }
 
   private get callbackUrl() {
-    const base= window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+    const base = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
     return `${base}/callback-url`;
   }
 
-  
+  connectionExists: boolean = false;
   private clientId = '123123';
   private identityServerUrl = 'http://localhost:8000';
   private requiredScope = ['read adminpanel', 'write adminpanel'];
-  constructor(private http: HttpClient, public router: Router) {}
+
+  private currentInterval = 200;
+  private source = interval(this.currentInterval);
 
 
-  public canLogin():Observable<boolean>
-  {
-    return this.http.get(`${this.identityServerUrl}`, { observe: 'response' }).pipe(
-      map((user) => {
-        if (user) {
-          console.log(user);
-          return true;
-        }
-        return false;
-      })
-    );
+  private pingSubscription:Subscription;
 
+  constructor(private http: HttpClient, public router: Router) {
+
+    this.pingSubscription=this.pingServer();
     
-    
+
+
   }
 
+  private pingServer(): Subscription
+  {
+    return this.source.subscribe(() => {
+      this.http.get(`${this.identityServerUrl}/user`, { observe: 'response' })
+        .subscribe(resp => { this.connectionExists = resp.status === 200;  this.pingSubscription.unsubscribe(); },err=>
+        {
+          this.pingSubscription.unsubscribe();
+          this.currentInterval+=5000;
+          this.source=interval(this.currentInterval);
+          this.pingSubscription=this.pingServer();
+        }
+        );
+      
+
+    })
+  }
   public isAuthenticated(): Observable<UserModel> {
     return this.http
       .get<ServerUserModel>(`${this.identityServerUrl}/is_authenticated`)
@@ -78,7 +90,7 @@ export class AuthService {
     const url = `${this.identityServerUrl}/token?code=${code}`;
     return this.http.get<ServerTokenResponse>(url).pipe(
       map((token) => token.token),
-      tap((token) => this._accessToken=token)
+      tap((token) => this._accessToken = token)
     );
   }
 }
