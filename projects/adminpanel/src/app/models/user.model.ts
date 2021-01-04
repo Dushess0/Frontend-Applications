@@ -1,6 +1,8 @@
 export interface  UserModel
 {
+    workerId?:string,
+    type?: string,
     name: string,
     surname:string,
-    phone:string
+    phoneNumber:string
 }

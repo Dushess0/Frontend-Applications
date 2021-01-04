@@ -150,6 +150,7 @@
               "projects/calendar/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "projects/calendar/src/styles.scss"
             ],
             "scripts": []
@@ -213,6 +214,7 @@
               "projects/calendar/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "projects/calendar/src/styles.scss"
             ],
             "scripts": []

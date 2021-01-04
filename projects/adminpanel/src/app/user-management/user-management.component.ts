@@ -28,7 +28,7 @@ export class UserManagementComponent implements OnInit {
   expandedElement: UserModel | null = null;
 
   ngOnInit(): void {
-    this.userProvider.getUsers().subscribe(data => this.users = data)
+    this.users=this.userProvider.currentProvider.getUsers()
   }
 
   addUser() {
@@ -39,7 +39,7 @@ export class UserManagementComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.userProvider.addUser(result)
+      this.userProvider.currentProvider.addUser(result);
     });
 
   }

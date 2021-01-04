@@ -1,7 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { Observable } from 'rxjs';
 import { UserModel } from '../models/user.model';
+import { ApiUserProviderService } from './api-user-provider.service';
+import { LocalStorageService } from './local-storage.service';
+import { LocalUserProviderService } from './local-user-provider.service';
 
 
 @Injectable({
@@ -9,28 +11,26 @@ import { UserModel } from '../models/user.model';
 })
 export class UserProviderService {
 
-  addUser(result: UserModel) {
 
-    if (!result)
-      return;
-    console.log(result)
-    throw new Error('Method not implemented.');
+  constructor(private apiUsers: ApiUserProviderService, private localUsers: LocalUserProviderService) {
+
   }
 
-  constructor() { }
-
-
-  getUsers(): Observable<UserModel[]> {
-    const mockupUsers: UserModel[] = [
-      {
-        name: "Marcin",
-        surname: "Najman",
-        phone: "+485257366"
-      }
-    ]
-    return of(mockupUsers);
+  public get currentProvider(): UserProvider {
+    if (this.apiUsers.canUse)
+      return this.apiUsers;
+    else
+      return this.localUsers;
   }
+}
 
+export interface UserProvider {
 
+  getUsers(): UserModel[];
+  addUser(user: UserModel): void;
+  deleteUser(id: number): void;
+  editUser(id: number, user: UserModel): void;
+
+  readonly canUse: boolean;
 
 }
