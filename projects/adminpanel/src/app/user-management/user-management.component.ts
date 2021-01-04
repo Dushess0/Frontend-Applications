@@ -28,7 +28,7 @@ export class UserManagementComponent implements OnInit {
   expandedElement: UserModel | null = null;
 
   ngOnInit(): void {
-    this.users=this.userProvider.currentProvider.getUsers()
+    this.userProvider.currentProvider.getUsers().subscribe(data=>console.log(data));
   }
 
   addUser() {

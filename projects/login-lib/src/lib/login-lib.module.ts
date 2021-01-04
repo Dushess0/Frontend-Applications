@@ -5,7 +5,8 @@ import { CallbackUrlPageComponent } from './callback-url/callback-url-page.compo
 import { ForbiddenPageComponent } from './forbidden-page/forbidden-page.component';
 import { HeaderComponent } from './header/header.component';
 import { MaterialModule } from './material/material.module';
-
+import { CommonModule } from '@angular/common';  
+import { BrowserModule } from '@angular/platform-browser';
 
 
 
@@ -16,7 +17,9 @@ import { MaterialModule } from './material/material.module';
     CallbackUrlPageComponent
   ],
   imports: [
-    MaterialModule
+    CommonModule,
+    MaterialModule,
+    BrowserModule
   ],
   providers:
     [AuthService,

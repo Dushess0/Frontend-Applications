@@ -16,7 +16,7 @@ export class UserCreateComponent implements OnInit {
   ngOnInit(): void {
     if (this.data==null)
     {
-      this.data={name:"", surname:"",phoneNumber:""};
+      this.data={username:"", id:0,phone_number:""};
     }
   }
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { UserModel } from '../models/user.model';
 import { LocalStorageService } from './local-storage.service';
 import { UserProvider } from './user-provider.service';
@@ -12,21 +13,21 @@ export class LocalUserProviderService implements UserProvider {
   get canUse(): boolean {
     return this.storage.isLocalStorageSupported;
   }
-  getUsers(): UserModel[] {
+  getUsers(): Observable<UserModel[]> {
     const users = this.storage.get("users") as UserModel[];
     if (users && users.length!=0 && users.length!=undefined)
-      return users;
+      return of(users);
     const mockupUsers: UserModel[] = [
       {
-        name: "Marcin",
-        surname: "Najman",
-        phoneNumber: "+485257366"
+        username: "Marcin",
+        id: 0,
+        phone_number: "+485257366"
       }
     ]
     mockupUsers.forEach(element => {
       this.addUser(element);
     });
-    return mockupUsers;
+    return of(mockupUsers);
   }
   addUser(user: UserModel): void {
     var users = this.storage.get("users") as UserModel[];

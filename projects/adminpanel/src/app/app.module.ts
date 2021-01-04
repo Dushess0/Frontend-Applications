@@ -11,6 +11,8 @@ import { LoginLibModule, MaterialModule } from 'login-lib';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { LocalStorageService } from './services/local-storage.service';
+import { LoginPageComponent } from './login-page/login-page.component';
+import {  MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -18,6 +20,7 @@ import { LocalStorageService } from './services/local-storage.service';
     AppComponent,
     UserManagementComponent,
     UserCreateComponent,
+    LoginPageComponent,
     
     
   ],
@@ -30,7 +33,8 @@ import { LocalStorageService } from './services/local-storage.service';
     FormsModule,
     LoginLibModule,
     MatTableModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatCardModule
   ],
   providers: [LocalStorageService],
   bootstrap: [AppComponent],

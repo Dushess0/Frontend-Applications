@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class LocalStorageService {
 
   localStorage: Storage;
+  public offineMode=false;
 
   constructor() {
     this.localStorage = window.localStorage;

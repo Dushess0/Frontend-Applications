@@ -1,0 +1,25 @@
+
+
+
+<div class="outer">
+    <mat-card class="card">
+
+        <h1>Nurse scheduling admin panel</h1>
+        <h3>You are not currently logged in</h3>
+
+        <mat-card-content>
+
+            
+            <button *ngIf="apiProvider.canUse" (click)="loginSSO()" mat-button color="primary">Log in with SSO</button>
+            <button *ngIf="!apiProvider.canUse" disabled  mat-button color="primary">Log in with SSO</button>
+
+            <button *ngIf="localProvider.canUse" (click)="offlineLog()" mat-button color="primary">Offline mode</button>
+            <button *ngIf="!localProvider.canUse" disabled mat-button color="primary">Offline mode</button>
+
+            <button *ngIf="apiProvider.canUse" mat-button color="primary">Register</button>
+            <button *ngIf="!apiProvider.canUse"disabled mat-button color="primary">Register</button>
+
+        </mat-card-content>
+
+    </mat-card>
+</div>
