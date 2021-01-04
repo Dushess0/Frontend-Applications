@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { LocalStorageService } from '../local-storage.service';
 
 
 @Component({
@@ -9,12 +11,20 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, public storage:LocalStorageService,private router:Router) { }
 
   loggedIn: boolean = false;
 
 
-
+  disableOfflineMode()
+  {
+    this.storage.OffLineMode=false;
+    this.router.navigateByUrl(
+      this.router.createUrlTree(
+        ['/login'], {}
+      )
+    );
+  }
 
   ngOnInit(): void {
     this.authService.isAuthenticated().subscribe(data => {

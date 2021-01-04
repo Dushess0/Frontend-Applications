@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'projects/login-lib/src/public-api';
+import { Router } from '@angular/router';
+import { AuthService, LocalStorageService } from 'projects/login-lib/src/public-api';
 import { ApiUserProviderService } from '../services/api-user-provider.service';
-import { LocalStorageService } from '../services/local-storage.service';
 import { LocalUserProviderService } from '../services/local-user-provider.service';
+
 
 @Component({
   selector: 'app-login-page',
@@ -11,7 +12,11 @@ import { LocalUserProviderService } from '../services/local-user-provider.servic
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor(public apiProvider:ApiUserProviderService, public localProvider:LocalUserProviderService,private  authService:AuthService, private localStorage:LocalStorageService) { }
+  constructor(public apiProvider:ApiUserProviderService, 
+    public localProvider:LocalUserProviderService,
+    private  authService:AuthService, 
+    private localStorage:LocalStorageService,
+    private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -22,7 +27,12 @@ export class LoginPageComponent implements OnInit {
   }
   offlineLog()
   {
-    this.localStorage.offineMode=true;
+    this.localStorage.OffLineMode=true;
+    this.router.navigateByUrl(
+      this.router.createUrlTree(
+        ['/'], {}
+      )
+    );
   }
   register()
   {

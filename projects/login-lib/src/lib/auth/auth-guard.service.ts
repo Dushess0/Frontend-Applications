@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LocalStorageService } from '../local-storage.service';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuardService implements CanActivate {
-  constructor(public auth: AuthService, public router: Router) { }
+  constructor(public auth: AuthService, public router: Router,private storage:LocalStorageService) { }
 
 
   
@@ -20,6 +21,8 @@ export class AuthGuardService implements CanActivate {
         if (user.isAuthenticated) {
           return true;
         }
+        console.log(this.storage.OffLineMode);
+        if (this.storage.OffLineMode) return true;
         this.router.navigateByUrl(
           this.router.createUrlTree(
             ['/login'], {}

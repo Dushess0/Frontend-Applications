@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { LocalStorageService } from 'projects/login-lib/src/public-api';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/user.model';
 import { ApiUserProviderService } from './api-user-provider.service';
-import { LocalStorageService } from './local-storage.service';
+
 import { LocalUserProviderService } from './local-user-provider.service';
 
 
@@ -17,7 +18,7 @@ export class UserProviderService {
   }
 
   public get currentProvider(): UserProvider {
-    if (this.storage.offineMode && this.localUsers.canUse)
+    if (this.storage.OffLineMode && this.localUsers.canUse)
       return this.localUsers
     else
       return this.apiUsers;

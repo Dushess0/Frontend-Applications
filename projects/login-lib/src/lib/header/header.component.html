@@ -3,6 +3,7 @@
     <span class="spacer"></span>
 
     <span *ngIf="loggedIn" >Logged in</span>
-    <span *ngIf="!loggedIn">Not logged in</span>
+    <span *ngIf="!loggedIn && storage.OffLineMode">Not logged in <button (click)="disableOfflineMode()" mat-button >Offline Mode</button></span>
+    <span *ngIf="!loggedIn && !storage.OffLineMode">Not logged in </span>
 
 </mat-toolbar>

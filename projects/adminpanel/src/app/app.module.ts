@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginLibModule, MaterialModule } from 'login-lib';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { LocalStorageService } from './services/local-storage.service';
+import { LocalStorageService } from '../../../login-lib/src/lib/local-storage.service';
 import { LoginPageComponent } from './login-page/login-page.component';
 import {  MatCardModule } from '@angular/material/card';
 
@@ -21,8 +21,6 @@ import {  MatCardModule } from '@angular/material/card';
     UserManagementComponent,
     UserCreateComponent,
     LoginPageComponent,
-    
-    
   ],
   imports: [
     BrowserModule,

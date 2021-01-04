@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { UserModel } from '../models/user.model';
-import { LocalStorageService } from './local-storage.service';
+import { LocalStorageService } from '../../../../login-lib/src/lib/local-storage.service';
 import { UserProvider } from './user-provider.service';
 
 @Injectable({

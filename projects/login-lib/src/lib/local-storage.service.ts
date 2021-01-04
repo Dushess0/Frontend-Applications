@@ -6,14 +6,27 @@ import { Injectable } from '@angular/core';
 export class LocalStorageService {
 
   localStorage: Storage;
-  public offineMode=false;
+  private offineModeKey = "offlineMode";
 
   constructor() {
     this.localStorage = window.localStorage;
   }
+
+
+  set OffLineMode(value: boolean) {
+    this.set(this.offineModeKey, value);
+  }
+  get OffLineMode(): boolean {
+    return this.get(this.offineModeKey) as boolean;
+  }
+
   get(key: string): any {
     if (this.isLocalStorageSupported) {
-      return JSON.parse(this.localStorage.getItem(key) ?? "");
+      const item = this.localStorage.getItem(key);
+      if (item != null)
+        return JSON.parse(item);
+      else
+        return null;
     }
     return null;
   }
