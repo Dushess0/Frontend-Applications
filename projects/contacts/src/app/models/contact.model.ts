@@ -1,6 +1,5 @@
-export interface  ContactModel
-{
-    name: string,
-    surname:string,
-    phone:string
+export interface ContactModel {
+  name: string;
+  surname: string;
+  phoneNumber: string;
 }

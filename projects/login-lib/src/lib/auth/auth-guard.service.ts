@@ -9,11 +9,11 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuardService implements CanActivate {
-  constructor(public auth: AuthService, public router: Router,private storage:LocalStorageService) { }
-
-
-  
-
+  constructor(
+    public auth: AuthService,
+    public router: Router,
+    private storage: LocalStorageService
+  ) {}
 
   canActivate(): Observable<boolean> {
     return this.auth.isAuthenticated().pipe(
@@ -21,13 +21,14 @@ export class AuthGuardService implements CanActivate {
         if (user.isAuthenticated) {
           return true;
         }
-        console.log(this.storage.OffLineMode);
         if (this.storage.OffLineMode) return true;
-        this.router.navigateByUrl(
-          this.router.createUrlTree(
-            ['/login'], {}
-          )
-        );
+        this.auth.authenticate();
+
+        // this.router.navigateByUrl(
+        //   this.router.createUrlTree(
+        //     ['/login'], {}
+        //   )
+        // );
         return false;
       })
     );

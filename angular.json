@@ -408,5 +408,8 @@
       }
     }
   },
-  "defaultProject": "adminpanel"
+  "defaultProject": "adminpanel",
+  "cli": {
+    "analytics": "7b5b5f4d-4e10-4137-b1af-65dcd0a8239d"
+  }
 }
