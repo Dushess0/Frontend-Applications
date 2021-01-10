@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserModel } from '../models/user.model';
+import { userFiels, UserModel } from '../models/user.model';
 
 @Component({
   selector: 'app-user-create',
@@ -14,14 +14,18 @@ export class UserCreateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: UserModel) { }
 
   ngOnInit(): void {
-    if (this.data==null)
-    {
-      this.data={username:"", id:0,phone_number:""};
+    if (this.data == null) {
+      this.data = {} as UserModel;
     }
   }
+  fields: string[] = userFiels;
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  onYesClick(): void {
+
+    this.dialogRef.close(this.data as UserModel);
   }
 
 }

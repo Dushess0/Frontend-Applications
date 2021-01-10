@@ -19,9 +19,12 @@ export class LocalUserProviderService implements UserProvider {
       return of(users);
     const mockupUsers: UserModel[] = [
       {
-        username: "Marcin",
-        id: 0,
-        phone_number: "+485257366"
+        name: "Joanna",
+        password: "",
+        phone_number: "888-888-888",
+        surname: "Kowalska",
+        work_norm: 1,
+        work_type: "TYPE",
       }
     ]
     mockupUsers.forEach(element => {
@@ -29,7 +32,7 @@ export class LocalUserProviderService implements UserProvider {
     });
     return of(mockupUsers);
   }
-  addUser(user: UserModel): void {
+  addUser(user: UserModel): Observable<UserModel> {
     var users = this.storage.get("users") as UserModel[];
 
     if (!users || users.length==0 || users.length==undefined) 
@@ -37,6 +40,7 @@ export class LocalUserProviderService implements UserProvider {
 
     users?.push(user);
     this.storage.set("users", users);
+    return of(user);
   }
   deleteUser(id: number): void {
     const users = this.storage.get("users") as UserModel[];

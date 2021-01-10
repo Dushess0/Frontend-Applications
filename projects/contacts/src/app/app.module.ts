@@ -7,11 +7,13 @@ import { ContactPageComponent } from './contact-page/contact-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent, LoginLibModule, MaterialModule } from 'login-lib';
 import { MatTableModule } from '@angular/material/table';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContactPageComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,

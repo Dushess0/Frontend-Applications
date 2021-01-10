@@ -1,6 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from '../models/user.model';
+import { userFiels, UserModel } from '../models/user.model';
 import { UserProviderService } from '../services/user-provider.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserCreateComponent } from '../user-create/user-create.component';
@@ -19,27 +19,33 @@ import { UserCreateComponent } from '../user-create/user-create.component';
 })
 export class UserManagementComponent implements OnInit {
 
+  displayedColumns: string[];
   constructor(
     private userProvider: UserProviderService,
     public dialog: MatDialog
-    ) { }
-  displayedColumns: string[] = ['name', 'surname', 'phone', 'edit', 'delete'];
+  ) {
+    this.displayedColumns = userFiels;
+  }
+
   users: UserModel[] = [];
   expandedElement: UserModel | null = null;
 
+  private getUsers(): void {
+    this.userProvider.currentProvider.getUsers().subscribe(data => this.users = data);
+  }
   ngOnInit(): void {
-    this.userProvider.currentProvider.getUsers().subscribe(data=>console.log(data));
+    this.getUsers();
   }
 
   addUser() {
 
     const dialogRef = this.dialog.open(UserCreateComponent, {
       width: '250px',
-      
-    });
 
+    });
     dialogRef.afterClosed().subscribe(result => {
-      this.userProvider.currentProvider.addUser(result);
+      this.userProvider.currentProvider.addUser(result).subscribe(data =>
+        this.getUsers());
     });
 
   }

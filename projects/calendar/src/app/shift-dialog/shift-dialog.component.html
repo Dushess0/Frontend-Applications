@@ -1,0 +1,14 @@
+<h1 mat-dialog-title> {{data.date.getDate()}}-{{data.date.getMonth()+1}}-{{data.date.getFullYear()}} </h1>
+<div mat-dialog-content>
+
+    <h2 *ngIf="data.shifts.length==0">There is no workers at this day</h2>
+
+    <div *ngFor="let shift of data.shifts">
+
+        <p> Shift code: {{shift.name}}</p>
+        <p>Working from {{shift.fromHour}}:00 to {{shift.toHour}}:00</p>
+        <p>Worker id: {{shift.worker_id}}</p>
+        <mat-divider></mat-divider>
+    </div>
+
+</div>

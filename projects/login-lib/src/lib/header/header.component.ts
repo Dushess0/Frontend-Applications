@@ -30,7 +30,13 @@ export class HeaderComponent implements OnInit {
     this.authService.isAuthenticated().subscribe(data => {
       this.loggedIn = data.isAuthenticated;
     }
+    
     );
+    
+  }
+  logout()
+  {
+    this.authService.logout();
   }
 
 }

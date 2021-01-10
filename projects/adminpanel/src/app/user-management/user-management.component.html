@@ -14,24 +14,14 @@
         <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
             <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                 <div>
-                    <div>
+                    
+                    <div *ngFor="let property of displayedColumns">
                         <mat-form-field appearance="fill">
-                            <mat-label>Name</mat-label>
-                            <input type="text" [value]="element.name" matInput>
+                            <mat-label>{{property}}</mat-label>
+                            <input type="text" [value]="element[property]" matInput>
                         </mat-form-field>
                     </div>
-                    <div>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Surname</mat-label>
-                            <input type="text" [value]="element.surname" matInput>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Phone number</mat-label>
-                            <input type="tel" [value]="element.phoneNumber" matInput>
-                        </mat-form-field>
-                    </div>
+                    
                     <div class="footer">
                         <button mat-button>Cancel changes</button>
                         <button mat-button>Save changes</button>

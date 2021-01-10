@@ -1,51 +1,28 @@
 <table class="tg">
     <thead>
         <tr>
-            <th >Monday</th>
-            <th >Tuesday</th>
-            <th >Wednesday</th>
-            <th >Thursday</th>
-            <th >Friday</th>
-            <th >Saturday</th>
-            <th >Sunday</th>
+            
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+            
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td >1</td>
-            <td >1</td>
-            <td >1</td>
-            <td >1</td>
-            <td >1</td>
-            <td >1</td>
-            <td >1</td>
+        <tr *ngFor="let chunk of chunks">
+            <td *ngFor="let day of chunk">
+                <button *ngIf="!day.isEmpty && day.shifts.length==0" (click)="showDetailed(day)"  mat-button> {{day.date.getDate()}} </button>
+                <button *ngIf="!day.isEmpty && day.shifts.length!=0" (click)="showDetailed(day)" class="has_worker" mat-button> {{day.date.getDate()}} </button>
+        
+            </td>
+
         </tr>
-        <tr>
-            <td >2</td>
-            <td >2</td>
-            <td >2</td>
-            <td >2</td>
-            <td >2</td>
-            <td >2</td>
-            <td >2</td>
-        </tr>
-        <tr>
-            <td >3</td>
-            <td >3</td>
-            <td >3</td>
-            <td >3</td>
-            <td >3</td>
-            <td >3</td>
-            <td >3</td>
-        </tr>
-        <tr>
-            <td >4</td>
-            <td >4</td>
-            <td >4</td>
-            <td >4</td>
-            <td >4</td>
-            <td >4</td>
-            <td >4</td>
-        </tr>
+
     </tbody>
 </table>
+
+

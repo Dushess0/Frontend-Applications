@@ -22,17 +22,13 @@ export class UserProviderService {
       return this.localUsers
     else
       return this.apiUsers;
-    
-    
-
-
   }
 }
 
 export interface UserProvider {
 
   getUsers(): Observable<UserModel[]>;
-  addUser(user: UserModel): void;
+  addUser(user: UserModel): Observable<UserModel>;
   deleteUser(id: number): void;
   editUser(id: number, user: UserModel): void;
 

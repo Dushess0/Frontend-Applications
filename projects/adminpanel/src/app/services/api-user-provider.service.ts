@@ -27,10 +27,10 @@ export class ApiUserProviderService implements UserProvider {
 
   getUsers(): Observable<UserModel[]> {
     // this.httpService.get(`${this.serverUrl}/user`).subscribe(data=>console.log( JSON.stringify(data)));
-    return this.httpService.get<UserModel[]>(`${this.serverUrl}/user`);
+    return this.httpService.get<UserModel[]>(`${this.serverUrl}/users`);
   }
-  addUser(user: UserModel): void {
-    this.httpService.post<UserModel>(`${this.serverUrl}/user`, user);
+  addUser(user: UserModel): Observable<UserModel> {
+    return this.httpService.post<UserModel>(`${this.serverUrl}/create_user`, user);
   }
   deleteUser(id: number): void {
     throw new Error('Method not implemented.');

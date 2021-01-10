@@ -39,7 +39,7 @@ export class AuthService {
   private clientId = '123123';
   private requiredScope = ['read adminpanel', 'write adminpanel'];
 
-  private currentInterval = 200;
+  private currentInterval = 1000;
   private source = interval(this.currentInterval);
 
   private pingSubscription: Subscription;
@@ -54,6 +54,7 @@ export class AuthService {
         .get(`${this.identityServerUrl}/is_active`, { observe: 'response' })
         .subscribe(
           (resp) => {
+            console.log(resp);
             this.connectionExists = resp.status === 200;
             this.pingSubscription.unsubscribe();
           },
@@ -67,6 +68,7 @@ export class AuthService {
     });
   }
   public isAuthenticated(): Observable<UserModel> {
+    console.log("casll");
     return this.http
       .get<ServerUserModel>(`${this.identityServerUrl}/is_authenticated`, {
         withCredentials: true,
@@ -83,6 +85,17 @@ export class AuthService {
     this.router.navigateByUrl(this.router.createUrlTree(['/callback-url'], {}));
     const url = `${this.identityServerUrl}/login?callback_url=${this.callbackUrl}&scope=${this.requiredScope}&client_id=${this.clientId}`;
     window.location.replace(url);
+  }
+  public logout() {
+
+    const url = `${this.identityServerUrl}/revoke`;
+    return this.http
+      .post(url, this.accessToken).subscribe(
+        () => {
+          location.reload();
+        }
+      )
+
   }
 
   public getAccessToken(code: string): Observable<string> {
