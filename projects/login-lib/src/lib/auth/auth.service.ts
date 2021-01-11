@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, Observable, of, Subscription } from 'rxjs';
@@ -72,6 +72,9 @@ export class AuthService {
     return this.http
       .get<ServerUserModel>(`${this.identityServerUrl}/is_authenticated`, {
         withCredentials: true,
+        headers: new HttpHeaders({
+          Authorization: `Berear ${this.accessToken}`,
+        }),
       })
       .pipe(
         map((response) => ({
