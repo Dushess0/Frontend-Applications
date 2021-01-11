@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService, CallbackUrlPageComponent, ForbiddenPageComponent } from 'login-lib';
 
 import { ContactPageComponent } from './contact-page/contact-page.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 
 const routes: Routes = [
@@ -11,6 +12,11 @@ const routes: Routes = [
     component: ContactPageComponent,
     canActivate: [AuthGuardService],
     pathMatch: 'full',
+  },
+  {
+    path:'login',
+    component:LoginPageComponent,
+    pathMatch:'full',
   },
   {
     path: 'callback-url',

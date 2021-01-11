@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, Observable, of, Subscription } from 'rxjs';
@@ -13,17 +13,19 @@ interface UserModel {
 }
 
 interface ServerTokenResponse {
-  token: string;
+  access_token: string,
+  refresh_token: string,
+  token_type: string,
+  expires: number
+
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private _accessToken: string = '';
-  public get accessToken(): string {
-    return this._accessToken;
-  }
+
+  token: ServerTokenResponse ={ access_token:"", refresh_token:"", expires:0, token_type:"" };
 
   private get callbackUrl() {
     const base = window.location.href.substring(
@@ -68,19 +70,28 @@ export class AuthService {
     });
   }
   public isAuthenticated(): Observable<UserModel> {
-    console.log("casll");
+
     return this.http
-      .get<ServerUserModel>(`${this.identityServerUrl}/is_authenticated`, {
+      .get<ServerUserModel>(`${this.identityServerUrl}/introspect`, {
         withCredentials: true,
+        observe: 'response',
         headers: new HttpHeaders({
-          Authorization: `Berear ${this.accessToken}`,
-        }),
+          Authorization: `Berear ${this.token.access_token}`,
+
+        },
+        )
+        ,
       })
       .pipe(
+        tap((response) => {
+          console.log(response);
+          console.log((response as any).headers);
+        }),
         map((response) => ({
-          isAuthenticated: response.is_authenticated,
+          isAuthenticated: response.body?.is_authenticated ?? false,
         })),
         catchError((_) => of({ isAuthenticated: false }))
+
       );
   }
 
@@ -93,7 +104,7 @@ export class AuthService {
 
     const url = `${this.identityServerUrl}/revoke`;
     return this.http
-      .post(url, this.accessToken).subscribe(
+      .post(url, this.token.access_token).subscribe(
         () => {
           location.reload();
         }
@@ -101,11 +112,14 @@ export class AuthService {
 
   }
 
-  public getAccessToken(code: string): Observable<string> {
+  public getAccessToken(code: string): Observable<ServerTokenResponse> {
     const url = `${this.identityServerUrl}/token?code=${code}`;
     return this.http.get<ServerTokenResponse>(url).pipe(
-      map((token) => token.token),
-      tap((token) => (this._accessToken = token))
+
+      tap((token) => {
+        this.token = token;
+        console.log(this.token);
+      })
     );
   }
 }

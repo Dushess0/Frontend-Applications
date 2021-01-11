@@ -1,23 +1,33 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from 'login-lib';
-import { of } from 'rxjs';
+import { AuthService, LocalStorageService } from 'login-lib';
 import { Observable } from 'rxjs';
 import { ContactModel } from '../models/contact.model';
+import { ApiContactsProviderService } from './api-contacts-provider.service';
+import { LocalContactsProviderService } from './local-contacts-provider.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactsProviderService {
-  private readonly contactApiUrl = 'http://localhost:8000';
-  constructor(private auth: AuthService, private http: HttpClient) {}
+  constructor(private apiContacts: ApiContactsProviderService, private localContacts: LocalContactsProviderService, private storage: LocalStorageService) {
 
-  getContacts(): Observable<ContactModel[]> {
-    return this.http.get<ContactModel[]>(`${this.contactApiUrl}/contacts`, {
-      headers: new HttpHeaders({
-        Authorization: `Berear ${this.auth.accessToken}`,
-      }),
-      withCredentials: true,
-    });
   }
+
+  public get currentProvider(): ContactsProvider {
+    if (this.storage.OffLineMode && this.localContacts.canUse)
+      return this.localContacts
+    else
+      return this.apiContacts;
+  }
+
+}
+
+
+export interface ContactsProvider {
+
+  getContacts(): Observable<ContactModel[]>;
+
+  readonly canUse: boolean;
+
 }
