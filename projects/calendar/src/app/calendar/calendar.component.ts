@@ -41,8 +41,7 @@ export class CalendarComponent implements OnInit {
     });
     firstDay = new Date(firstDay);
     lastDay = new Date(lastDay);
-    console.log(firstDay);
-    console.log(lastDay);
+   
     var arr: DayModel[] = [];
     const daysIn = this.daysInMonth(firstDay.getMonth(), firstDay.getFullYear());
     for (let index = 1; index <= daysIn; index++) {
@@ -65,7 +64,7 @@ export class CalendarComponent implements OnInit {
       arr.unshift({ date: new Date(), shifts: [], isEmpty: true })
 
     }
-    console.log(offset);
+
     return this.chunkArray(arr, 7);
 
   }

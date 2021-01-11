@@ -15,7 +15,7 @@ export class ShiftDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data)
+    
   }
 
 }

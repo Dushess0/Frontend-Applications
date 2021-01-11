@@ -26,7 +26,7 @@ export class ApiUserProviderService implements UserProvider {
   }
 
   getUsers(): Observable<UserModel[]> {
-    // this.httpService.get(`${this.serverUrl}/user`).subscribe(data=>console.log( JSON.stringify(data)));
+    
     return this.httpService.get<UserModel[]>(`${this.serverUrl}/users`);
   }
   addUser(user: UserModel): Observable<UserModel> {

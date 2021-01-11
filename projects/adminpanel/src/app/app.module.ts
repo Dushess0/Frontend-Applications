@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { LocalStorageService } from '../../../login-lib/src/lib/local-storage.service';
 import { LoginPageComponent } from './login-page/login-page.component';
 import {  MatCardModule } from '@angular/material/card';
+import { adminClientIdProvider } from '../enviroment';
 
 
 @NgModule({
@@ -34,7 +35,10 @@ import {  MatCardModule } from '@angular/material/card';
     MatFormFieldModule,
     MatCardModule
   ],
-  providers: [LocalStorageService],
+  providers: [LocalStorageService,
+  {
+    provide: 'clientID', useValue:adminClientIdProvider
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

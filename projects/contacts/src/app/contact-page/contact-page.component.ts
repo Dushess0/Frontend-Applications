@@ -14,8 +14,9 @@ export class ContactPageComponent implements OnInit {
   displayedColumns: string[] = ['name', 'surname', 'phone'];
   ngOnInit(): void {
     this.contactService.currentProvider.getContacts().subscribe((data) => {
-      this.contacts = data;
-      console.log(data);
+      this.contacts = data.filter(contact=>contact.name!="");
+
+
     });
   }
 }

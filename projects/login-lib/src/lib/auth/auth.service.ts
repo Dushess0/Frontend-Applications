@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -25,7 +25,7 @@ interface ServerTokenResponse {
 })
 export class AuthService {
 
-  token: ServerTokenResponse ={ access_token:"", refresh_token:"", expires:0, token_type:"" };
+  token: ServerTokenResponse = { access_token: "", refresh_token: "", expires: 0, token_type: "" };
 
   private get callbackUrl() {
     const base = window.location.href.substring(
@@ -37,17 +37,20 @@ export class AuthService {
 
   connectionExists: boolean = false;
   private identityServerUrl = 'http://localhost:8000';
-  // TODO: Add provider for this values
-  private clientId = '123123';
-  private requiredScope = ['read adminpanel', 'write adminpanel'];
+
+
+
+  clientId = '';
+
 
   private currentInterval = 1000;
   private source = interval(this.currentInterval);
 
   private pingSubscription: Subscription;
 
-  constructor(private http: HttpClient, public router: Router) {
+  constructor(private http: HttpClient, public router: Router, @Inject('clientID') environment: IclientIdProvider) {
     this.pingSubscription = this.pingServer();
+    this.clientId = environment.clientId;
   }
 
   private pingServer(): Subscription {
@@ -56,7 +59,7 @@ export class AuthService {
         .get(`${this.identityServerUrl}/is_active`, { observe: 'response' })
         .subscribe(
           (resp) => {
-            console.log(resp);
+
             this.connectionExists = resp.status === 200;
             this.pingSubscription.unsubscribe();
           },
@@ -83,10 +86,6 @@ export class AuthService {
         ,
       })
       .pipe(
-        tap((response) => {
-          console.log(response);
-          console.log((response as any).headers);
-        }),
         map((response) => ({
           isAuthenticated: response.body?.is_authenticated ?? false,
         })),
@@ -97,7 +96,7 @@ export class AuthService {
 
   public authenticate() {
     this.router.navigateByUrl(this.router.createUrlTree(['/callback-url'], {}));
-    const url = `${this.identityServerUrl}/login?callback_url=${this.callbackUrl}&scope=${this.requiredScope}&client_id=${this.clientId}`;
+    const url = `${this.identityServerUrl}/login?callback_url=${this.callbackUrl}&client_id=${this.clientId}`;
     window.location.replace(url);
   }
   public logout() {
@@ -118,8 +117,11 @@ export class AuthService {
 
       tap((token) => {
         this.token = token;
-        console.log(this.token);
       })
     );
   }
+}
+
+export interface IclientIdProvider {
+  clientId: string;
 }

@@ -20,6 +20,7 @@ export class ApiContactsProviderService implements ContactsProvider {
 
   getContacts(): Observable<ContactModel[]> {
 
+
     return this.httpService.get<ContactModel[]>(`${this.contactApiUrl}/contacts`, {
       headers: new HttpHeaders({
         Authorization: `Berear ${this.authService.token.access_token}`,
