@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'login-lib';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/user.model';
+import { LocalUserProviderService } from './local-user-provider.service';
 import { UserProvider } from './user-provider.service';
 
 @Injectable({
@@ -12,8 +13,9 @@ export class ApiUserProviderService implements UserProvider {
   serverUrl: string = 'http://localhost:8000';
   constructor(
     private httpService: HttpClient,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private localUsers: LocalUserProviderService
+  ) { }
   get canUse(): boolean {
     return this.authService.connectionExists;
   }
@@ -23,7 +25,10 @@ export class ApiUserProviderService implements UserProvider {
   }
 
   getUsers(): Observable<UserModel[]> {
-    return this.httpService.get<UserModel[]>(`${this.serverUrl}/users`);
+    const result=this.httpService.get<UserModel[]>(`${this.serverUrl}/users`);
+    this.localUsers.addUsers(result);
+    return result;
+
   }
   addUser(user: UserModel): Observable<UserModel> {
     return this.httpService.post<UserModel>(
@@ -34,4 +39,5 @@ export class ApiUserProviderService implements UserProvider {
   deleteUser(id: number): void {
     throw new Error('Method not implemented.');
   }
+  
 }

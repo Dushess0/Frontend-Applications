@@ -32,7 +32,7 @@ export class LoginPageComponent implements OnInit {
     );
   }
   register() {
-
+    this.authService.register();
   }
 
 }

@@ -11,6 +11,7 @@ export class LocalShiftProvider implements ShiftProvider {
     constructor(private storage: LocalStorageService) { }
     getShifts(from: Date, to: Date): Observable<ShiftModel[]> {
         const shifts = this.storage.get("shifts") as ShiftModel[];
+        console.log(shifts);
         if (shifts && shifts.length != 0 && shifts.length != undefined)
             return of(shifts);
         const mockupShifts: ShiftModel[] = [
@@ -25,27 +26,32 @@ export class LocalShiftProvider implements ShiftProvider {
             }
         ]
         mockupShifts.forEach(element => {
-            this.addUser(element);
+            this.addShift(element);
         });
         return of(mockupShifts);
     }
 
 
-    addShift(user: ShiftModel): Observable<ShiftModel> {
-        throw new Error("Method not implemented.");
-    }
 
     get canUse(): boolean {
         return this.storage.isLocalStorageSupported;
     }
 
-    addUser(shift: ShiftModel): Observable<ShiftModel> {
+    addShift(shift: ShiftModel): Observable<ShiftModel> {
         var shifts = this.storage.get("shifts") as ShiftModel[];
         if (!shifts || shifts.length == 0 || shifts.length == undefined)
             shifts = [];
         shifts?.push(shift);
-        this.storage.set("users", shift);
+        this.storage.set("shifts", shift);
         return of(shift);
     }
+    addShifts(result: Observable<ShiftModel[]>) {
+        this.storage.remove("shifts");
+        result.subscribe(shifts =>
+            shifts.forEach(shift => {
+                this.addShift(shift);
+            }));
+    }
+
 
 }

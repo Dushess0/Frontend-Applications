@@ -16,7 +16,7 @@
             <button *ngIf="localProvider.canUse" (click)="offlineLog()" mat-button color="primary">Offline mode</button>
             <button *ngIf="!localProvider.canUse" disabled mat-button color="primary">Offline mode</button>
 
-            <button *ngIf="apiProvider.canUse" mat-button color="primary">Register</button>
+            <button *ngIf="apiProvider.canUse"(click)="register()"  mat-button color="primary">Register</button>
             <button *ngIf="!apiProvider.canUse"disabled mat-button color="primary">Register</button>
 
         </mat-card-content>

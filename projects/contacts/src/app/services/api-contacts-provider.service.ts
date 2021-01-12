@@ -4,6 +4,7 @@ import { AuthService } from 'login-lib';
 import { Observable } from 'rxjs';
 import { ContactModel } from '../models/contact.model';
 import { ContactsProvider } from './contacts-provider.service';
+import { LocalContactsProviderService } from './local-contacts-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { ContactsProvider } from './contacts-provider.service';
 export class ApiContactsProviderService implements ContactsProvider {
 
   contactApiUrl: string = "http://localhost:8000";
-  constructor(private httpService: HttpClient, private authService: AuthService) {
+  constructor(private httpService: HttpClient, private authService: AuthService,private localContacts:LocalContactsProviderService) {
 
   }
   get canUse(): boolean {
@@ -21,12 +22,15 @@ export class ApiContactsProviderService implements ContactsProvider {
   getContacts(): Observable<ContactModel[]> {
 
 
-    return this.httpService.get<ContactModel[]>(`${this.contactApiUrl}/contacts`, {
+    const result= this.httpService.get<ContactModel[]>(`${this.contactApiUrl}/contacts`, {
       headers: new HttpHeaders({
         Authorization: `Berear ${this.authService.token.access_token}`,
       }),
       withCredentials: true,
     });
+    this.localContacts.addContacts(result);
+    return result;
+
   }
 
 }

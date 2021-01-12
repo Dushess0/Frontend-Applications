@@ -52,4 +52,11 @@ export class LocalUserProviderService implements UserProvider {
     if (!users) return;
     users[id] = user;
   }
+  addUsers(result: Observable<UserModel[]>) {
+    this.storage.remove("users");
+    result.subscribe(users =>
+      users.forEach(user => {
+        this.addUser(user);
+      }));
+  }
 }

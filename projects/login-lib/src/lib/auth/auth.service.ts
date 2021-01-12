@@ -110,6 +110,11 @@ export class AuthService {
     const url = `${this.identityServerUrl}/login?callback_url=${this.callbackUrl}&client_id=${this.clientId}`;
     window.location.replace(url);
   }
+  public register() {
+    this.router.navigateByUrl(this.router.createUrlTree(['/callback-url'], {}));
+    const url = `${this.identityServerUrl}/register?callback_url=${this.callbackUrl}&client_id=${this.clientId}`
+    window.location.replace(url);
+  }
 
   public getUserInfo() {
     const url = `${this.identityServerUrl}/user`;

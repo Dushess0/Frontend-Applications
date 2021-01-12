@@ -26,11 +26,11 @@ export class LocalContactsProviderService implements ContactsProvider {
       }
     ]
     mockupUsers.forEach(element => {
-      this.addUser(element);
+      this.addContact(element);
     });
     return of(mockupUsers);
   }
-  addUser(model: ContactModel): Observable<ContactModel> {
+  addContact(model: ContactModel): Observable<ContactModel> {
     var contacts = this.storage.get("contacts") as ContactModel[];
 
     if (!contacts || contacts.length == 0 || contacts.length == undefined)
@@ -39,5 +39,15 @@ export class LocalContactsProviderService implements ContactsProvider {
     contacts?.push(model);
     this.storage.set("contacts", contacts);
     return of(model);
+  }
+  addContacts(result:Observable<ContactModel[]>)
+  {
+    this.storage.remove("contacts");
+    result.subscribe(users=>
+      {
+        users.forEach(user => {
+            this.addContact(user);
+        });
+      })
   }
 }
