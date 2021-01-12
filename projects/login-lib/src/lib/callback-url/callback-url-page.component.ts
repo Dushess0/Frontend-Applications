@@ -23,7 +23,7 @@ export class CallbackUrlPageComponent implements OnDestroy {
       this.accessTokenSubscription = this.auth
         .getAccessToken(code)
         .subscribe((_) => {
-          this.router.navigate(['/']);
+          this.auth.getUserInfo().subscribe((_) => this.router.navigate(['/']));
         });
     });
   }

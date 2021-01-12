@@ -1,9 +1,8 @@
 <mat-toolbar>
     <span><ng-content></ng-content></span>
     <span class="spacer"></span>
-
-    <span *ngIf="loggedIn" >Logged in  <button  mat-button (click)="logout()">Logout</button>  </span>
+    <span *ngIf="!!userName">{{userName}}</span>
+    <span *ngIf="loggedIn" > Logged in  <button  mat-button (click)="logout()">Logout</button>  </span>
     <span *ngIf="!loggedIn && storage.OffLineMode">Not logged in <button (click)="disableOfflineMode()" mat-button >Offline Mode</button></span>
     <span *ngIf="!loggedIn && !storage.OffLineMode">Not logged in </span>
-
 </mat-toolbar>

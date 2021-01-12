@@ -3,30 +3,31 @@ import { CallbackUrlPageComponent } from './callback-url/callback-url-page.compo
 import { ForbiddenPageComponent } from './forbidden-page/forbidden-page.component';
 import { HeaderComponent } from './header/header.component';
 import { MaterialModule } from './material/material.module';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { LocalStorageService } from './local-storage.service';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './auth/auth.service';
-
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthHeaderInterceptor } from './auth/auth-header-http.interceptor';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     ForbiddenPageComponent,
-    CallbackUrlPageComponent
+    CallbackUrlPageComponent,
   ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    BrowserModule
+  imports: [CommonModule, MaterialModule, BrowserModule],
+  providers: [
+    AuthService,
+    AuthGuardService,
+    LocalStorageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHeaderInterceptor,
+      multi: true,
+    },
   ],
-  providers:
-    [AuthService,
-      AuthGuardService,
-      LocalStorageService,
-    ],
-  exports: [HeaderComponent,ForbiddenPageComponent,CallbackUrlPageComponent]
+  exports: [HeaderComponent, ForbiddenPageComponent, CallbackUrlPageComponent],
 })
-export class LoginLibModule { }
+export class LoginLibModule {}
