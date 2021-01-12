@@ -5,3 +5,18 @@
 .mat-cell {
   padding: 8px 8px 8px 0;
 }
+
+
+mat-table {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 200px;
+    max-width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 10%;
+}
+
+

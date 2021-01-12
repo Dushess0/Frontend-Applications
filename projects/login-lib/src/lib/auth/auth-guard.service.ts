@@ -22,13 +22,13 @@ export class AuthGuardService implements CanActivate {
           return true;
         }
         if (this.storage.OffLineMode) return true;
-        this.auth.authenticate();
+        
 
-        // this.router.navigateByUrl(
-        //   this.router.createUrlTree(
-        //     ['/login'], {}
-        //   )
-        // );
+        this.router.navigateByUrl(
+          this.router.createUrlTree(
+            ['/login'], {}
+          )
+        );
         return false;
       })
     );
