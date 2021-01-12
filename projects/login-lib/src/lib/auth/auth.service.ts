@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { interval, Observable, of, Subscription } from 'rxjs';
+import { interval, Observable, of, Subject, Subscription } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 interface ServerUserModel {
@@ -13,19 +13,33 @@ interface UserModel {
 }
 
 interface ServerTokenResponse {
-  access_token: string,
-  refresh_token: string,
-  token_type: string,
-  expires: number
-
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires: number;
 }
 
+interface UserInfo {
+  id: string;
+  name: string;
+  surname: string;
+  work_type: string;
+  work_norm: string;
+  phone_number: string;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  token: ServerTokenResponse = {
+    access_token: '',
+    refresh_token: '',
+    expires: 0,
+    token_type: '',
+  };
 
-  token: ServerTokenResponse = { access_token: "", refresh_token: "", expires: 0, token_type: "" };
+  authenticatedState$: Subject<UserModel> = new Subject();
+  currentUser$: Subject<UserInfo> = new Subject();
 
   private get callbackUrl() {
     const base = window.location.href.substring(
@@ -38,17 +52,19 @@ export class AuthService {
   connectionExists: boolean = false;
   private identityServerUrl = 'http://localhost:8000';
 
-
-
   clientId = '';
-
+  user?: UserInfo;
 
   private currentInterval = 1000;
   private source = interval(this.currentInterval);
 
   private pingSubscription: Subscription;
 
-  constructor(private http: HttpClient, public router: Router, @Inject('clientID') environment: IclientIdProvider) {
+  constructor(
+    private http: HttpClient,
+    public router: Router,
+    @Inject('clientID') environment: IclientIdProvider
+  ) {
     this.pingSubscription = this.pingServer();
     this.clientId = environment.clientId;
   }
@@ -59,7 +75,6 @@ export class AuthService {
         .get(`${this.identityServerUrl}/is_active`, { observe: 'response' })
         .subscribe(
           (resp) => {
-
             this.connectionExists = resp.status === 200;
             this.pingSubscription.unsubscribe();
           },
@@ -72,25 +87,21 @@ export class AuthService {
         );
     });
   }
-  public isAuthenticated(): Observable<UserModel> {
 
+  public isAuthenticated(): Observable<UserModel> {
     return this.http
       .get<ServerUserModel>(`${this.identityServerUrl}/introspect`, {
-        withCredentials: true,
         observe: 'response',
-        headers: new HttpHeaders({
-          Authorization: `Berear ${this.token.access_token}`,
-
-        },
-        )
-        ,
       })
       .pipe(
-        map((response) => ({
-          isAuthenticated: response.body?.is_authenticated ?? false,
-        })),
+        map((response) => {
+          const isAuthenticated = {
+            isAuthenticated: response.body?.is_authenticated ?? false,
+          };
+          this.authenticatedState$.next(isAuthenticated);
+          return isAuthenticated;
+        }),
         catchError((_) => of({ isAuthenticated: false }))
-
       );
   }
 
@@ -99,22 +110,33 @@ export class AuthService {
     const url = `${this.identityServerUrl}/login?callback_url=${this.callbackUrl}&client_id=${this.clientId}`;
     window.location.replace(url);
   }
-  public logout() {
 
+  public getUserInfo() {
+    const url = `${this.identityServerUrl}/user`;
+    return this.http.get<UserInfo>(url).pipe(
+      tap((user) => {
+        this.user = user;
+        this.currentUser$.next(user);
+      })
+    );
+  }
+
+  public logout() {
     const url = `${this.identityServerUrl}/revoke`;
     return this.http
-      .post(url, this.token.access_token).subscribe(
-        () => {
-          location.reload();
-        }
-      )
-
+      .post(url, {
+        client_id: this.clientId,
+        // TODO currently user is alway undefined
+        user_id: this.user?.id,
+      })
+      .subscribe(() => {
+        location.reload();
+      });
   }
 
   public getAccessToken(code: string): Observable<ServerTokenResponse> {
     const url = `${this.identityServerUrl}/token?code=${code}`;
     return this.http.get<ServerTokenResponse>(url).pipe(
-
       tap((token) => {
         this.token = token;
       })
