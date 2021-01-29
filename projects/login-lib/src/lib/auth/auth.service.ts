@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, Observable, of, Subject, Subscription } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { LocalStorageService } from '../local-storage.service';
 
 interface ServerUserModel {
   is_authenticated: boolean;
@@ -63,6 +64,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     public router: Router,
+    private localStorage:LocalStorageService,
     @Inject('clientID') environment: IclientIdProvider
   ) {
     this.pingSubscription = this.pingServer();
@@ -89,6 +91,10 @@ export class AuthService {
   }
 
   public isAuthenticated(): Observable<UserModel> {
+    if (!this.token){
+      this.token=this.localStorage.get("token");
+    }
+    console.log('invoked')
     return this.http
       .get<ServerUserModel>(`${this.identityServerUrl}/introspect`, {
         observe: 'response',
@@ -144,6 +150,7 @@ export class AuthService {
     return this.http.get<ServerTokenResponse>(url).pipe(
       tap((token) => {
         this.token = token;
+        this.localStorage.set("token",this.token);
       })
     );
   }

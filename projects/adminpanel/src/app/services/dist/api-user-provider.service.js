@@ -21,8 +21,8 @@ var ApiUserProviderService = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    ApiUserProviderService.prototype.editUser = function (id, user) {
-        throw new Error('Method not implemented.');
+    ApiUserProviderService.prototype.editUser = function (user) {
+        this.httpService.put(this.authService.identityServerUrl + "/users", user);
     };
     ApiUserProviderService.prototype.getUsers = function () {
         var result = this.httpService.get(this.authService.identityServerUrl + "/users");
@@ -33,7 +33,7 @@ var ApiUserProviderService = /** @class */ (function () {
         return this.httpService.post(this.authService.identityServerUrl + "/create_user", user);
     };
     ApiUserProviderService.prototype.deleteUser = function (id) {
-        throw new Error('Method not implemented.');
+        this.httpService["delete"](this.authService.identityServerUrl + "/users/" + id);
     };
     ApiUserProviderService = __decorate([
         core_1.Injectable({

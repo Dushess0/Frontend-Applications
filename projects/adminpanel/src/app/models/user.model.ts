@@ -6,6 +6,7 @@ export interface UserModel {
     work_norm: number;
     phone_number: string;
     password:string;
+    id?:number;
 }
 
 export const userFiels = ["name",

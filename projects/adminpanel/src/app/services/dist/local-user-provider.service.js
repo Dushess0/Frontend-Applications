@@ -53,11 +53,11 @@ var LocalUserProviderService = /** @class */ (function () {
         users.splice(id, 1);
         this.storage.set("users", users);
     };
-    LocalUserProviderService.prototype.editUser = function (id, user) {
+    LocalUserProviderService.prototype.editUser = function (user) {
         var users = this.storage.get("users");
         if (!users)
             return;
-        users[id] = user;
+        users[user.id || 0] = user;
     };
     LocalUserProviderService.prototype.addUsers = function (result) {
         var _this = this;

@@ -19,8 +19,8 @@ export class ApiUserProviderService implements UserProvider {
     return this.authService.connectionExists;
   }
 
-  editUser(id: number, user: UserModel): void {
-    throw new Error('Method not implemented.');
+  editUser(user: UserModel): void {
+    this.httpService.put<UserModel>(`${this.authService.identityServerUrl}/users`,user);
   }
 
   getUsers(): Observable<UserModel[]> {
@@ -36,7 +36,7 @@ export class ApiUserProviderService implements UserProvider {
     );
   }
   deleteUser(id: number): void {
-    throw new Error('Method not implemented.');
+    this.httpService.delete<number>(`${this.authService.identityServerUrl}/users/${id}`);
   }
   
 }

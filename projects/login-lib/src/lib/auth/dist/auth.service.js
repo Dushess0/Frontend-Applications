@@ -14,9 +14,10 @@ var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
 var operators_1 = require("rxjs/operators");
 var AuthService = /** @class */ (function () {
-    function AuthService(http, router, environment) {
+    function AuthService(http, router, localStorage, environment) {
         this.http = http;
         this.router = router;
+        this.localStorage = localStorage;
         this.token = {
             access_token: '',
             refresh_token: '',
@@ -59,6 +60,10 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.isAuthenticated = function () {
         var _this = this;
+        if (!this.token) {
+            this.token = this.localStorage.get("token");
+        }
+        console.log('invoked');
         return this.http
             .get(this.identityServerUrl + "/introspect", {
             observe: 'response'
@@ -108,13 +113,14 @@ var AuthService = /** @class */ (function () {
         var url = this.identityServerUrl + "/token?code=" + code;
         return this.http.get(url).pipe(operators_1.tap(function (token) {
             _this.token = token;
+            _this.localStorage.set("token", _this.token);
         }));
     };
     AuthService = __decorate([
         core_1.Injectable({
             providedIn: 'root'
         }),
-        __param(2, core_1.Inject('clientID'))
+        __param(3, core_1.Inject('clientID'))
     ], AuthService);
     return AuthService;
 }());

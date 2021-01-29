@@ -12,9 +12,11 @@ var core_1 = require("@angular/core");
 var user_model_1 = require("../models/user.model");
 var user_create_component_1 = require("../user-create/user-create.component");
 var UserManagementComponent = /** @class */ (function () {
-    function UserManagementComponent(userProvider, dialog) {
+    function UserManagementComponent(userProvider, dialog, http, authService) {
         this.userProvider = userProvider;
         this.dialog = dialog;
+        this.http = http;
+        this.authService = authService;
         this.users = [];
         this.expandedElement = null;
         this.displayedColumns = user_model_1.userFiels.filter(function (val) { return val != "password"; });
@@ -24,6 +26,20 @@ var UserManagementComponent = /** @class */ (function () {
         this.userProvider.currentProvider.getUsers().subscribe(function (data) { return _this.users = data; });
     };
     UserManagementComponent.prototype.ngOnInit = function () {
+        this.getUsers();
+    };
+    UserManagementComponent.prototype.cancelChanges = function (user) {
+        this.getUsers();
+    };
+    UserManagementComponent.prototype.saveChanges = function (user) {
+        this.userProvider.currentProvider.editUser(user);
+        this.getUsers();
+    };
+    UserManagementComponent.prototype.revokeUser = function (user) {
+        this.http.post(this.authService.identityServerUrl + "/revoke_user_token", user.id);
+    };
+    UserManagementComponent.prototype.deleteUser = function (user) {
+        this.userProvider.currentProvider.deleteUser(user.id || 0);
         this.getUsers();
     };
     UserManagementComponent.prototype.addUser = function () {
