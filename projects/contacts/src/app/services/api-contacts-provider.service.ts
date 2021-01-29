@@ -11,7 +11,7 @@ import { LocalContactsProviderService } from './local-contacts-provider.service'
 })
 export class ApiContactsProviderService implements ContactsProvider {
 
-  contactApiUrl: string = "http://localhost:8000";
+
   constructor(private httpService: HttpClient, private authService: AuthService,private localContacts:LocalContactsProviderService) {
 
   }
@@ -22,7 +22,7 @@ export class ApiContactsProviderService implements ContactsProvider {
   getContacts(): Observable<ContactModel[]> {
 
 
-    const result= this.httpService.get<ContactModel[]>(`${this.contactApiUrl}/contacts`, {
+    const result= this.httpService.get<ContactModel[]>(`${this.authService.identityServerUrl}/contacts`, {
       headers: new HttpHeaders({
         Authorization: `Berear ${this.authService.token.access_token}`,
       }),

@@ -10,7 +10,6 @@ import { UserProvider } from './user-provider.service';
   providedIn: 'root',
 })
 export class ApiUserProviderService implements UserProvider {
-  serverUrl: string = 'http://localhost:8000';
   constructor(
     private httpService: HttpClient,
     private authService: AuthService,
@@ -25,14 +24,14 @@ export class ApiUserProviderService implements UserProvider {
   }
 
   getUsers(): Observable<UserModel[]> {
-    const result=this.httpService.get<UserModel[]>(`${this.serverUrl}/users`);
+    const result=this.httpService.get<UserModel[]>(`${this.authService.identityServerUrl}/users`);
     this.localUsers.addUsers(result);
     return result;
 
   }
   addUser(user: UserModel): Observable<UserModel> {
     return this.httpService.post<UserModel>(
-      `${this.serverUrl}/create_user`,
+      `${this.authService.identityServerUrl}/create_user`,
       user
     );
   }

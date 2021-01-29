@@ -25,7 +25,7 @@ export function dateToAPI(date: Date): string {
 })
 
 export class ApiShiftProvider implements ShiftProvider {
-    serverUrl: string = "http://localhost:8000";
+    
 
     addShift(user: ShiftModel): Observable<ShiftModel> {
         throw new Error("Method not implemented.");
@@ -41,7 +41,7 @@ export class ApiShiftProvider implements ShiftProvider {
     getShifts(from: Date, to: Date): Observable<ShiftModel[]> {
         const start = dateToAPI(from);
         const end = dateToAPI(to);
-        const result = this.httpService.get<ShiftModel[]>(`${this.serverUrl}/worker_shifts/${this.authService.user?.id}?from=${start}&to=${end}`,);
+        const result = this.httpService.get<ShiftModel[]>(`${this.authService.identityServerUrl}/worker_shifts/${this.authService.user?.id}?from=${start}&to=${end}`,);
         this.localShifts.addShifts(result);
         return result;
     }
