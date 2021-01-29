@@ -94,7 +94,6 @@ export class AuthService {
     if (!this.token){
       this.token=this.localStorage.get("token");
     }
-    console.log('invoked')
     return this.http
       .get<ServerUserModel>(`${this.identityServerUrl}/introspect`, {
         observe: 'response',

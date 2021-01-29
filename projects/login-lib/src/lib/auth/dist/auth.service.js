@@ -63,7 +63,6 @@ var AuthService = /** @class */ (function () {
         if (!this.token) {
             this.token = this.localStorage.get("token");
         }
-        console.log('invoked');
         return this.http
             .get(this.identityServerUrl + "/introspect", {
             observe: 'response'
