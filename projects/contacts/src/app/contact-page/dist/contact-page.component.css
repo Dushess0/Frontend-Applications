@@ -1,0 +1,13 @@
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 8px 8px 8px 0;
+}
+
+table {
+  width: 60%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
