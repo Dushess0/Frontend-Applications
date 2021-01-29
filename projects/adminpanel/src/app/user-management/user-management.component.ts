@@ -24,7 +24,7 @@ export class UserManagementComponent implements OnInit {
     private userProvider: UserProviderService,
     public dialog: MatDialog
   ) {
-    this.displayedColumns = userFiels;
+    this.displayedColumns = userFiels.filter(val=>val!="password");
   }
 
   users: UserModel[] = [];

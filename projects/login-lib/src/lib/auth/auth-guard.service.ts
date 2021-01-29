@@ -23,7 +23,6 @@ export class AuthGuardService implements CanActivate {
         }
         if (this.storage.OffLineMode) return true;
         
-
         this.router.navigateByUrl(
           this.router.createUrlTree(
             ['/login'], {}

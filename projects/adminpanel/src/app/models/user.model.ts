@@ -5,10 +5,12 @@ export interface UserModel {
     work_type: string;
     work_norm: number;
     phone_number: string;
+    password:string;
 }
 
 export const userFiels = ["name",
     "phone_number",
     "surname",
     "work_norm",
-    "work_type"];
+    "work_type",
+    "password"];
