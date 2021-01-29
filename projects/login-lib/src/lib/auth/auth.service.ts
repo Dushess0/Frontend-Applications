@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   connectionExists: boolean = false;
-  private identityServerUrl = 'http://localhost:8000';
+  identityServerUrl = 'http://localhost:8000';
 
   clientId = '';
   user?: UserInfo;
