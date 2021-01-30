@@ -27,12 +27,7 @@ var HeaderComponent = /** @class */ (function () {
         });
     };
     HeaderComponent.prototype.logout = function () {
-        if (this.authService.clientId != '1') {
-            this.authService.logoutWithRevoke();
-        }
-        else {
-            this.authService.logout();
-        }
+        this.authService.logout();
     };
     HeaderComponent = __decorate([
         core_1.Component({

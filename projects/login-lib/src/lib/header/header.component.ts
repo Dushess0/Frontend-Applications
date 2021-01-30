@@ -30,12 +30,6 @@ export class HeaderComponent implements OnInit {
     });
   }
   logout() {
-    if (this.authService.clientId != '1') {
-      this.authService.logoutWithRevoke()
-    }
-    else {
       this.authService.logout();
-    }
-
   }
 }
