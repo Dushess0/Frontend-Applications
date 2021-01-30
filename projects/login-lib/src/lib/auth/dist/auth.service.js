@@ -37,6 +37,7 @@ var AuthService = /** @class */ (function () {
         rxjs_1.interval(10000).subscribe(function (_) {
             if (_this.token.refresh_token) {
                 _this.getAccessToken(_this.token.refresh_token).subscribe();
+                _this.getUserInfo().subscribe();
             }
         });
     }

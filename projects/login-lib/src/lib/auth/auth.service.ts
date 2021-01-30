@@ -72,8 +72,8 @@ export class AuthService {
     interval(10000).subscribe(_ => {
       if (this.token.refresh_token) {
         this.getAccessToken(this.token.refresh_token).subscribe();
+        this.getUserInfo().subscribe();
       }
-
     })
 
 
