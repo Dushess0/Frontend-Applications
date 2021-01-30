@@ -141,22 +141,20 @@ export class AuthService {
     return this.http.get<UserInfo>(url).pipe(
       tap((user) => {
         this.user = user;
-
         this.currentUser$.next(user);
       })
     );
   }
   public logoutWithRevoke() {
-    this.revokeApp(this.clientId);
+    this.revokeApp(this.clientId).subscribe(() => {
+      location.reload();
+    });
   }
-  public revokeApp(id: string) {
+  public revokeApp(id: string): Observable<any> {
     const url = `${this.identityServerUrl}/revoke`;
     return this.http
       .post(url, {
         client_id: id,
-      })
-      .subscribe(() => {
-        location.reload();
       });
   }
 

@@ -27,6 +27,9 @@ var UserManagementComponent = /** @class */ (function () {
         this.userProvider.currentProvider.getUsers().subscribe(function (data) { return _this.users = data; });
     };
     UserManagementComponent.prototype.ngOnInit = function () {
+        this.getData();
+    };
+    UserManagementComponent.prototype.getData = function () {
         this.getUsers();
         this.getAuthorizedApps();
     };
@@ -51,8 +54,11 @@ var UserManagementComponent = /** @class */ (function () {
         this.getUsers();
     };
     UserManagementComponent.prototype.revokeApp = function (app) {
-        this.authService.revokeApp(app);
-        this.getAuthorizedApps();
+        var _this = this;
+        this.authService.revokeApp(app).subscribe(function (_) {
+            _this.getAuthorizedApps();
+        });
+        ;
     };
     UserManagementComponent.prototype.addUser = function () {
         var _this = this;

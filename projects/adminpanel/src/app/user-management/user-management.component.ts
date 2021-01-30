@@ -39,9 +39,13 @@ export class UserManagementComponent implements OnInit {
 		this.userProvider.currentProvider.getUsers().subscribe(data => this.users = data);
 	}
 	ngOnInit(): void {
+	this.getData();
+
+	}
+	getData()
+	{
 		this.getUsers();
 		this.getAuthorizedApps();
-
 	}
 	getAuthorizedApps() {
 		this.http.get(`${this.authService.identityServerUrl}/get_authorized_apps`).subscribe(data => {
@@ -67,8 +71,11 @@ export class UserManagementComponent implements OnInit {
 		this.getUsers();
 	}
 	revokeApp(app: string) {
-		this.authService.revokeApp(app);
-		this.getAuthorizedApps();
+		this.authService.revokeApp(app).subscribe(_=>
+			{
+				this.getAuthorizedApps();
+			});
+		;
 	}
 	addUser() {
 		const dialogRef = this.dialog.open(UserCreateComponent, {

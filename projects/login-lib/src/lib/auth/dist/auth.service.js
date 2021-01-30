@@ -105,16 +105,15 @@ var AuthService = /** @class */ (function () {
         }));
     };
     AuthService.prototype.logoutWithRevoke = function () {
-        this.revokeApp(this.clientId);
+        this.revokeApp(this.clientId).subscribe(function () {
+            location.reload();
+        });
     };
     AuthService.prototype.revokeApp = function (id) {
         var url = this.identityServerUrl + "/revoke";
         return this.http
             .post(url, {
             client_id: id
-        })
-            .subscribe(function () {
-            location.reload();
         });
     };
     AuthService.prototype.logout = function () {
