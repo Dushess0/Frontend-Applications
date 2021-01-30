@@ -69,7 +69,7 @@ export class AuthService {
   ) {
     this.pingSubscription = this.pingServer();
     this.clientId = environment.clientId;
-    interval(5000).subscribe(_ => {
+    interval(10000).subscribe(_ => {
       if (this.token.refresh_token) {
         this.getAccessToken(this.token.refresh_token).subscribe();
       }

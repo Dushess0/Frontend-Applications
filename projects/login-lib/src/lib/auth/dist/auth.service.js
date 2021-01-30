@@ -34,7 +34,7 @@ var AuthService = /** @class */ (function () {
         this.source = rxjs_1.interval(this.currentInterval);
         this.pingSubscription = this.pingServer();
         this.clientId = environment.clientId;
-        rxjs_1.interval(5000).subscribe(function (_) {
+        rxjs_1.interval(10000).subscribe(function (_) {
             if (_this.token.refresh_token) {
                 _this.getAccessToken(_this.token.refresh_token).subscribe();
             }
