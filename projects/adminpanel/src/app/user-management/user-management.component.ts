@@ -22,11 +22,12 @@ import { AuthService } from 'login-lib';
 export class UserManagementComponent implements OnInit {
 
 	displayedColumns: string[];
+	authorizedApps: { "client_id": string; "name": string }[] = [];
 	constructor(
 		private userProvider: UserProviderService,
 		public dialog: MatDialog,
-		private http:HttpClient,
-		private authService:AuthService
+		private http: HttpClient,
+		private authService: AuthService
 	) {
 		this.displayedColumns = userFiels.filter(val => val != "password");
 	}
@@ -39,6 +40,16 @@ export class UserManagementComponent implements OnInit {
 	}
 	ngOnInit(): void {
 		this.getUsers();
+		this.getAuthorizedApps();
+
+	}
+	getAuthorizedApps() {
+		this.http.get(`${this.authService.identityServerUrl}/get_authorized_apps`).subscribe(data => {
+			this.authorizedApps = (data as { "client_id": string; "name": string }[]).filter(
+				item => item.client_id != this.authService.clientId
+			);
+		}
+		);
 	}
 
 	cancelChanges(user: UserModel) {
@@ -49,14 +60,17 @@ export class UserManagementComponent implements OnInit {
 		this.getUsers()
 	}
 	revokeUser(user: UserModel) {
-		this.http.post(`${this.authService.identityServerUrl}/revoke_user_token`,user.id);
+		this.http.post(`${this.authService.identityServerUrl}/revoke_user_token`, user.id);
 	}
 	deleteUser(user: UserModel) {
-		this.userProvider.currentProvider.deleteUser(user.id || 0);
+		this.userProvider.currentProvider.deleteUser(user.id || 0).subscribe(data => console.log(data));
 		this.getUsers();
 	}
+	revokeApp(app: string) {
+		this.authService.revokeApp(app);
+		this.getAuthorizedApps();
+	}
 	addUser() {
-
 		const dialogRef = this.dialog.open(UserCreateComponent, {
 			width: '250px',
 
@@ -65,7 +79,6 @@ export class UserManagementComponent implements OnInit {
 			this.userProvider.currentProvider.addUser(result).subscribe(data =>
 				this.getUsers());
 		});
-
 	}
 
 }

@@ -10,6 +10,7 @@ import { AuthGuardService } from './auth/auth-guard.service';
 import { AuthService } from './auth/auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHeaderInterceptor } from './auth/auth-header-http.interceptor';
+import { TokenErrorInterceptor } from './auth/token-error-http.interceptor';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,11 @@ import { AuthHeaderInterceptor } from './auth/auth-header-http.interceptor';
       useClass: AuthHeaderInterceptor,
       multi: true,
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenErrorInterceptor,
+      multi: true,
+    }
   ],
   exports: [HeaderComponent, ForbiddenPageComponent, CallbackUrlPageComponent],
 })

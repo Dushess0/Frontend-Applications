@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, Observable, of, Subject, Subscription } from 'rxjs';
@@ -64,11 +64,20 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     public router: Router,
-    private localStorage:LocalStorageService,
+    private localStorage: LocalStorageService,
     @Inject('clientID') environment: IclientIdProvider
   ) {
     this.pingSubscription = this.pingServer();
     this.clientId = environment.clientId;
+    interval(5000).subscribe(_ => {
+      if (this.token.refresh_token) {
+        this.getAccessToken(this.token.refresh_token).subscribe();
+      }
+
+    })
+
+
+
   }
 
   private pingServer(): Subscription {
@@ -80,7 +89,7 @@ export class AuthService {
             this.connectionExists = resp.status === 200;
             this.pingSubscription.unsubscribe();
           },
-          (err) => {
+          () => {
             this.pingSubscription.unsubscribe();
             this.currentInterval += 5000;
             this.source = interval(this.currentInterval);
@@ -89,11 +98,8 @@ export class AuthService {
         );
     });
   }
+  public introspect(): Observable<UserModel> {
 
-  public isAuthenticated(): Observable<UserModel> {
-    if (!this.token){
-      this.token=this.localStorage.get("token");
-    }
     return this.http
       .get<ServerUserModel>(`${this.identityServerUrl}/introspect`, {
         observe: 'response',
@@ -108,6 +114,15 @@ export class AuthService {
         }),
         catchError((_) => of({ isAuthenticated: false }))
       );
+  }
+
+  public isAuthenticated(): Observable<UserModel> {
+    if (this.token.access_token === "") {
+      this.token = this.localStorage.get("token");
+    }
+    this.getUserInfo().subscribe();
+    return this.introspect();
+
   }
 
   public authenticate() {
@@ -126,19 +141,29 @@ export class AuthService {
     return this.http.get<UserInfo>(url).pipe(
       tap((user) => {
         this.user = user;
+
         this.currentUser$.next(user);
       })
     );
   }
-
-  public logout() {
+  public logoutWithRevoke() {
+    this.revokeApp(this.clientId);
+  }
+  public revokeApp(id: string) {
     const url = `${this.identityServerUrl}/revoke`;
     return this.http
       .post(url, {
-        client_id: this.clientId,
-        // TODO currently user is alway undefined
-        user_id: this.user?.id,
+        client_id: id,
       })
+      .subscribe(() => {
+        location.reload();
+      });
+  }
+
+  public logout() {
+    const url = `${this.identityServerUrl}/logout`;
+    return this.http
+      .post(url, {})
       .subscribe(() => {
         location.reload();
       });
@@ -149,7 +174,7 @@ export class AuthService {
     return this.http.get<ServerTokenResponse>(url).pipe(
       tap((token) => {
         this.token = token;
-        this.localStorage.set("token",this.token);
+        this.localStorage.set("token", this.token);
       })
     );
   }

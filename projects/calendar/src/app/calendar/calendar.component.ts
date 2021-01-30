@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from 'login-lib';
 import { last } from 'rxjs/operators';
 import { ShiftModel } from '../models/ShiftModel';
 import { ShiftProviderService } from '../services/shift-provider.service';
@@ -13,7 +14,7 @@ import { ShiftDialogComponent } from '../shift-dialog/shift-dialog.component';
 export class CalendarComponent implements OnInit {
 
   chunks: DayModel[][];
-  constructor(private shiftProvider: ShiftProviderService, public dialog: MatDialog) {
+  constructor(private shiftProvider: ShiftProviderService, public dialog: MatDialog, private authService: AuthService) {
     this.chunks = [];
   }
 
@@ -23,10 +24,13 @@ export class CalendarComponent implements OnInit {
     firstDay.setDate(1);
     const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
 
+    this.authService.currentUser$.subscribe(
+      data => {
+        this.shiftProvider.currentProvider.getShifts(firstDay, lastDay).subscribe((data) => {
+          this.chunks = this.generateMonth(data);
+        })
+      });
 
-    this.shiftProvider.currentProvider.getShifts(firstDay, lastDay).subscribe((data) => {
-      this.chunks = this.generateMonth(data);
-    })
   }
   generateMonth(data: ShiftModel[]) {
 
@@ -41,7 +45,6 @@ export class CalendarComponent implements OnInit {
     });
     firstDay = new Date(firstDay);
     lastDay = new Date(lastDay);
-   
     var arr: DayModel[] = [];
     const daysIn = this.daysInMonth(firstDay.getMonth(), firstDay.getFullYear());
     for (let index = 1; index <= daysIn; index++) {

@@ -16,7 +16,6 @@ var LocalShiftProvider = /** @class */ (function () {
     LocalShiftProvider.prototype.getShifts = function (from, to) {
         var _this = this;
         var shifts = this.storage.get("shifts");
-        console.log(shifts);
         if (shifts && shifts.length != 0 && shifts.length != undefined)
             return rxjs_1.of(shifts);
         var mockupShifts = [

@@ -33,7 +33,7 @@ var ApiUserProviderService = /** @class */ (function () {
         return this.httpService.post(this.authService.identityServerUrl + "/create_user", user);
     };
     ApiUserProviderService.prototype.deleteUser = function (id) {
-        this.httpService["delete"](this.authService.identityServerUrl + "/users/" + id);
+        return this.httpService["delete"](this.authService.identityServerUrl + "/users/" + id);
     };
     ApiUserProviderService = __decorate([
         core_1.Injectable({

@@ -14,6 +14,7 @@ import { LocalStorageService } from '../../../login-lib/src/lib/local-storage.se
 import { LoginPageComponent } from './login-page/login-page.component';
 import {  MatCardModule } from '@angular/material/card';
 import { adminClientIdProvider } from '../enviroment';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { adminClientIdProvider } from '../enviroment';
     LoginLibModule,
     MatTableModule,
     MatFormFieldModule,
-    MatCardModule
+    MatCardModule,
+    MatListModule,
   ],
   providers: [LocalStorageService,
   {

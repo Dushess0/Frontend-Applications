@@ -17,6 +17,7 @@ var UserManagementComponent = /** @class */ (function () {
         this.dialog = dialog;
         this.http = http;
         this.authService = authService;
+        this.authorizedApps = [];
         this.users = [];
         this.expandedElement = null;
         this.displayedColumns = user_model_1.userFiels.filter(function (val) { return val != "password"; });
@@ -27,6 +28,13 @@ var UserManagementComponent = /** @class */ (function () {
     };
     UserManagementComponent.prototype.ngOnInit = function () {
         this.getUsers();
+        this.getAuthorizedApps();
+    };
+    UserManagementComponent.prototype.getAuthorizedApps = function () {
+        var _this = this;
+        this.http.get(this.authService.identityServerUrl + "/get_authorized_apps").subscribe(function (data) {
+            _this.authorizedApps = data.filter(function (item) { return item.client_id != _this.authService.clientId; });
+        });
     };
     UserManagementComponent.prototype.cancelChanges = function (user) {
         this.getUsers();
@@ -39,8 +47,12 @@ var UserManagementComponent = /** @class */ (function () {
         this.http.post(this.authService.identityServerUrl + "/revoke_user_token", user.id);
     };
     UserManagementComponent.prototype.deleteUser = function (user) {
-        this.userProvider.currentProvider.deleteUser(user.id || 0);
+        this.userProvider.currentProvider.deleteUser(user.id || 0).subscribe(function (data) { return console.log(data); });
         this.getUsers();
+    };
+    UserManagementComponent.prototype.revokeApp = function (app) {
+        this.authService.revokeApp(app);
+        this.getAuthorizedApps();
     };
     UserManagementComponent.prototype.addUser = function () {
         var _this = this;

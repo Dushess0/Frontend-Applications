@@ -11,7 +11,6 @@ export class LocalShiftProvider implements ShiftProvider {
     constructor(private storage: LocalStorageService) { }
     getShifts(from: Date, to: Date): Observable<ShiftModel[]> {
         const shifts = this.storage.get("shifts") as ShiftModel[];
-        console.log(shifts);
         if (shifts && shifts.length != 0 && shifts.length != undefined)
             return of(shifts);
         const mockupShifts: ShiftModel[] = [

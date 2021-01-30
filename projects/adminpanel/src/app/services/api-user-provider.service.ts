@@ -35,8 +35,8 @@ export class ApiUserProviderService implements UserProvider {
       user
     );
   }
-  deleteUser(id: number): void {
-    this.httpService.delete<number>(`${this.authService.identityServerUrl}/users/${id}`);
+  deleteUser(id: number): Observable<number> {
+    return this.httpService.delete<number>(`${this.authService.identityServerUrl}/users/${id}`);
   }
   
 }

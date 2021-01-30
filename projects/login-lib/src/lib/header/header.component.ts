@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     public storage: LocalStorageService,
     private router: Router
-  ) {}
+  ) { }
 
   loggedIn: boolean = false;
   userName?: string;
@@ -30,6 +30,12 @@ export class HeaderComponent implements OnInit {
     });
   }
   logout() {
-    this.authService.logout();
+    if (this.authService.clientId != '1') {
+      this.authService.logoutWithRevoke()
+    }
+    else {
+      this.authService.logout();
+    }
+
   }
 }

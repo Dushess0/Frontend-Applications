@@ -29,7 +29,7 @@ export interface UserProvider {
 
   getUsers(): Observable<UserModel[]>;
   addUser(user: UserModel): Observable<UserModel>;
-  deleteUser(id: number): void;
+  deleteUser(id: number): Observable<number>;
   editUser(user: UserModel): void;
 
   readonly canUse: boolean;

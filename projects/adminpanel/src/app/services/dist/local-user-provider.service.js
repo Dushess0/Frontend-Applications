@@ -52,6 +52,7 @@ var LocalUserProviderService = /** @class */ (function () {
         var users = this.storage.get("users");
         users.splice(id, 1);
         this.storage.set("users", users);
+        return rxjs_1.of(id);
     };
     LocalUserProviderService.prototype.editUser = function (user) {
         var users = this.storage.get("users");

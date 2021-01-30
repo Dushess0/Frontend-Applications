@@ -1,17 +1,14 @@
 <button mat-button (click)="addUser()">
     Add user
 </button>
-
+<button class="material-icons" (click)="ngOnInit()" >
+    restore
+    </button>
 <table mat-table [dataSource]="users" multiTemplateDataRows class="mat-elevation-z8">
     <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
         <th mat-header-cell *matHeaderCellDef> {{column}} </th>
         <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
     </ng-container>
-
-    
-    
-
-
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="expandedDetail">
         <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
@@ -24,11 +21,10 @@
                             <input type="text" [value]="element[property]" matInput>
                         </mat-form-field>
                     </div>
-
                     <div class="footer">
                         <button mat-button (click)="cancelChanges(element)">Cancel changes</button>
-                        <button mat-button (click)="cancelChanges(element)">Delete user</button>
-                        <button mat-button (click)="cancelChanges(element)">Revoke user token</button>
+                        <button mat-button (click)="deleteUser(element)">Delete user</button>
+                        <button mat-button (click)="revokeUser(element)">Revoke user token</button>
                         <button mat-button (click)="saveChanges(element)">Save changes</button>
                     </div>
                 </div>
@@ -44,3 +40,8 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 
 </table>
+
+<mat-list>
+ <mat-list-item  *ngFor="let item of authorizedApps" > {{item.name}} <button (click)="revokeApp(item.client_id)" >Revoke app permissions</button> </mat-list-item>
+
+</mat-list>

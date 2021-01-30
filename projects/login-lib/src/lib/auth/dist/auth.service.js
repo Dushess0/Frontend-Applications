@@ -15,6 +15,7 @@ var rxjs_1 = require("rxjs");
 var operators_1 = require("rxjs/operators");
 var AuthService = /** @class */ (function () {
     function AuthService(http, router, localStorage, environment) {
+        var _this = this;
         this.http = http;
         this.router = router;
         this.localStorage = localStorage;
@@ -33,6 +34,11 @@ var AuthService = /** @class */ (function () {
         this.source = rxjs_1.interval(this.currentInterval);
         this.pingSubscription = this.pingServer();
         this.clientId = environment.clientId;
+        rxjs_1.interval(5000).subscribe(function (_) {
+            if (_this.token.refresh_token) {
+                _this.getAccessToken(_this.token.refresh_token).subscribe();
+            }
+        });
     }
     Object.defineProperty(AuthService.prototype, "callbackUrl", {
         get: function () {
@@ -50,7 +56,7 @@ var AuthService = /** @class */ (function () {
                 .subscribe(function (resp) {
                 _this.connectionExists = resp.status === 200;
                 _this.pingSubscription.unsubscribe();
-            }, function (err) {
+            }, function () {
                 _this.pingSubscription.unsubscribe();
                 _this.currentInterval += 5000;
                 _this.source = rxjs_1.interval(_this.currentInterval);
@@ -58,11 +64,8 @@ var AuthService = /** @class */ (function () {
             });
         });
     };
-    AuthService.prototype.isAuthenticated = function () {
+    AuthService.prototype.introspect = function () {
         var _this = this;
-        if (!this.token) {
-            this.token = this.localStorage.get("token");
-        }
         return this.http
             .get(this.identityServerUrl + "/introspect", {
             observe: 'response'
@@ -75,6 +78,13 @@ var AuthService = /** @class */ (function () {
             _this.authenticatedState$.next(isAuthenticated);
             return isAuthenticated;
         }), operators_1.catchError(function (_) { return rxjs_1.of({ isAuthenticated: false }); }));
+    };
+    AuthService.prototype.isAuthenticated = function () {
+        if (this.token.access_token === "") {
+            this.token = this.localStorage.get("token");
+        }
+        this.getUserInfo().subscribe();
+        return this.introspect();
     };
     AuthService.prototype.authenticate = function () {
         this.router.navigateByUrl(this.router.createUrlTree(['/callback-url'], {}));
@@ -94,15 +104,23 @@ var AuthService = /** @class */ (function () {
             _this.currentUser$.next(user);
         }));
     };
-    AuthService.prototype.logout = function () {
-        var _a;
+    AuthService.prototype.logoutWithRevoke = function () {
+        this.revokeApp(this.clientId);
+    };
+    AuthService.prototype.revokeApp = function (id) {
         var url = this.identityServerUrl + "/revoke";
         return this.http
             .post(url, {
-            client_id: this.clientId,
-            // TODO currently user is alway undefined
-            user_id: (_a = this.user) === null || _a === void 0 ? void 0 : _a.id
+            client_id: id
         })
+            .subscribe(function () {
+            location.reload();
+        });
+    };
+    AuthService.prototype.logout = function () {
+        var url = this.identityServerUrl + "/logout";
+        return this.http
+            .post(url, {})
             .subscribe(function () {
             location.reload();
         });
