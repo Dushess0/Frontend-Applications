@@ -19,8 +19,8 @@ export class ApiUserProviderService implements UserProvider {
     return this.authService.connectionExists;
   }
 
-  editUser(user: UserModel): void {
-    this.httpService.put<UserModel>(`${this.authService.identityServerUrl}/users`,user);
+  editUser(user: UserModel): Observable<any> {
+    return this.httpService.put<UserModel>(`${this.authService.identityServerUrl}/users/${user.id}`,user);
   }
 
   getUsers(): Observable<UserModel[]> {

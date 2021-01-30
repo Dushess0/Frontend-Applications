@@ -22,7 +22,7 @@ var ApiUserProviderService = /** @class */ (function () {
         configurable: true
     });
     ApiUserProviderService.prototype.editUser = function (user) {
-        this.httpService.put(this.authService.identityServerUrl + "/users", user);
+        return this.httpService.put(this.authService.identityServerUrl + "/users/" + user.id, user);
     };
     ApiUserProviderService.prototype.getUsers = function () {
         var result = this.httpService.get(this.authService.identityServerUrl + "/users");

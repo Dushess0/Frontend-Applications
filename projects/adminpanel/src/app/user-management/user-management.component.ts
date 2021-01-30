@@ -29,7 +29,7 @@ export class UserManagementComponent implements OnInit {
 		private http: HttpClient,
 		private authService: AuthService
 	) {
-		this.displayedColumns = userFiels.filter(val => val != "password");
+		this.displayedColumns = userFiels;
 	}
 
 	users: UserModel[] = [];
@@ -60,7 +60,7 @@ export class UserManagementComponent implements OnInit {
 		this.getUsers();
 	}
 	saveChanges(user: UserModel) {
-		this.userProvider.currentProvider.editUser(user);
+		this.userProvider.currentProvider.editUser(user).subscribe();
 		this.getUsers()
 	}
 	revokeUser(user: UserModel) {

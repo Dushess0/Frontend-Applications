@@ -48,10 +48,12 @@ export class LocalUserProviderService implements UserProvider {
     this.storage.set("users", users);
     return of(id);
   }
-  editUser(user: UserModel): void {
+  editUser(user: UserModel):  Observable<any> {
     const users = this.storage.get("users") as UserModel[];
-    if (!users) return;
+    if (!users) return of (user);
     users[user.id||0] = user;
+    return of(user);
+
   }
   addUsers(result: Observable<UserModel[]>) {
     this.storage.remove("users");

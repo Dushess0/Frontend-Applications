@@ -20,7 +20,7 @@ var UserManagementComponent = /** @class */ (function () {
         this.authorizedApps = [];
         this.users = [];
         this.expandedElement = null;
-        this.displayedColumns = user_model_1.userFiels.filter(function (val) { return val != "password"; });
+        this.displayedColumns = user_model_1.userFiels;
     }
     UserManagementComponent.prototype.getUsers = function () {
         var _this = this;
@@ -43,7 +43,7 @@ var UserManagementComponent = /** @class */ (function () {
         this.getUsers();
     };
     UserManagementComponent.prototype.saveChanges = function (user) {
-        this.userProvider.currentProvider.editUser(user);
+        this.userProvider.currentProvider.editUser(user).subscribe();
         this.getUsers();
     };
     UserManagementComponent.prototype.revokeUser = function (user) {

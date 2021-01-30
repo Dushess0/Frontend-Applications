@@ -18,13 +18,12 @@
                     <div *ngFor="let property of displayedColumns">
                         <mat-form-field appearance="fill">
                             <mat-label>{{property}}</mat-label>
-                            <input type="text" [value]="element[property]" matInput>
+                            <input type="text"  [(ngModel)]="element[property]" matInput>
                         </mat-form-field>
                     </div>
                     <div class="footer">
                         <button mat-button (click)="cancelChanges(element)">Cancel changes</button>
                         <button mat-button (click)="deleteUser(element)">Delete user</button>
-                        <button mat-button (click)="revokeUser(element)">Revoke user token</button>
                         <button mat-button (click)="saveChanges(element)">Save changes</button>
                     </div>
                 </div>

@@ -57,8 +57,9 @@ var LocalUserProviderService = /** @class */ (function () {
     LocalUserProviderService.prototype.editUser = function (user) {
         var users = this.storage.get("users");
         if (!users)
-            return;
+            return rxjs_1.of(user);
         users[user.id || 0] = user;
+        return rxjs_1.of(user);
     };
     LocalUserProviderService.prototype.addUsers = function (result) {
         var _this = this;
