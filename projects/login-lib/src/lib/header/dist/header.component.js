@@ -22,8 +22,14 @@ var HeaderComponent = /** @class */ (function () {
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.authService.currentUser$.subscribe(function (user) {
+            console.log(user);
             _this.userName = user.name;
-            _this.loggedIn = true;
+        });
+        this.authService.authenticatedState$.subscribe(function (data) {
+            if (data)
+                _this.loggedIn = data.isAuthenticated;
+            else
+                _this.loggedIn = false;
         });
     };
     HeaderComponent.prototype.logout = function () {

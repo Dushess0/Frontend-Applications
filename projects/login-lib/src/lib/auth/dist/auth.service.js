@@ -36,7 +36,7 @@ var AuthService = /** @class */ (function () {
         this.clientId = environment.clientId;
         rxjs_1.interval(10000).subscribe(function (_) {
             if (_this.token.refresh_token) {
-                _this.getAccessToken(_this.token.refresh_token).subscribe();
+                _this.getAccessToken(_this.token.refresh_token).toPromise()["catch"](function (error) { return _this.authenticatedState$.next(undefined); });
                 _this.getUserInfo().subscribe();
             }
         });

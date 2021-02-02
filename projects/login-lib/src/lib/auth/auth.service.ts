@@ -71,8 +71,9 @@ export class AuthService {
     this.clientId = environment.clientId;
     interval(10000).subscribe(_ => {
       if (this.token.refresh_token) {
-        this.getAccessToken(this.token.refresh_token).subscribe();
+        this.getAccessToken(this.token.refresh_token).toPromise().catch(error=>this.authenticatedState$.next(undefined));
         this.getUserInfo().subscribe();
+        
       }
     })
 
