@@ -20,7 +20,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const firstDay = new Date();
+    const firstDay = new Date(2021,1,0);
     firstDay.setDate(1);
     const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
 

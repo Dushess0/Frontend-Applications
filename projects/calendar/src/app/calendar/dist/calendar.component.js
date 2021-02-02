@@ -18,7 +18,7 @@ var CalendarComponent = /** @class */ (function () {
     }
     CalendarComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var firstDay = new Date();
+        var firstDay = new Date(2021, 1, 0);
         firstDay.setDate(1);
         var lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
         this.authService.currentUser$.subscribe(function (data) {
